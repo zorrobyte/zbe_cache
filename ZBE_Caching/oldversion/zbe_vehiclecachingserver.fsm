@@ -1,0 +1,177 @@
+/*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, ZBE_VehicleCachingserver">*/
+/*%FSM<HEAD>*/
+/*
+item0[] = {"Init_and_functions",0,250,150.952545,-124.118782,285.369690,-74.118797,0.000000,"Init and functions" \n ""};
+item1[] = {"Ready_",8,218,165.697510,-39.548157,255.697525,10.451836,0.000000,"Ready?"};
+item2[] = {"Begin_Loop",3,250,-45.453876,14.012531,44.546127,64.012527,0.000000,"Begin Loop"};
+item3[] = {"Cache_",8,218,-110.159431,94.359749,-20.159359,144.359756,0.000000,"Cache?"};
+item4[] = {"Cache",2,250,-106.302521,174.015152,-16.302505,224.015152,0.000000,"Cache"};
+item5[] = {"UnCache_",8,218,-6.794922,95.334732,83.205078,145.334732,0.000000,"UnCache?"};
+item6[] = {"UnCache",2,4346,-4.480785,172.472382,85.519241,222.472382,0.000000,"UnCache"};
+item7[] = {"Alive_",8,218,-257.492310,140.074570,-167.492310,190.074570,0.000000,"Alive?"};
+item8[] = {"End",1,250,-196.553543,-63.568817,-106.553513,-13.568832,0.000000,"End"};
+link0[] = {0,1};
+link1[] = {1,2};
+link2[] = {2,3};
+link3[] = {3,4};
+link4[] = {4,5};
+link5[] = {4,7};
+link6[] = {5,6};
+link7[] = {6,3};
+link8[] = {7,8};
+globals[] = {0.000000,0,0,0,0,640,480,1,13,6316128,1,-398.273926,407.574219,317.761292,-192.027008,969,613,1};
+window[] = {0,-1,-1,-1,-1,785,26,1382,26,1,987};
+*//*%FSM</HEAD>*/
+class FSM
+{
+  fsmName = "ZBE_VehicleCachingserver";
+  class States
+  {
+    /*%FSM<STATE "Init_and_functions">*/
+    class Init_and_functions
+    {
+      name = "Init_and_functions";
+      init = /*%FSM<STATEINIT""">*/"_vehicle = _this select 0;" \n
+       "_zbe_dist = _this select 1;" \n
+       "_zbe_state = ""UNCACHED"";" \n
+       "" \n
+       "ZBE_trigUnits = {" \n
+       "	private[""_trigUnits""];" \n
+       "        _trigUnits = [];" \n
+       "        _trigUnits = _trigUnits + ([] call BIS_fnc_listPlayers); " \n
+       "        _trigUnits;" \n
+       "};" \n
+       "" \n
+       "ZBE_closeUnit = {" \n
+       "	private[""_units"", ""_unit"", ""_dist"", ""_udist""];" \n
+       "	_units = _this select 0;" \n
+       "	_unit = _this select 1;" \n
+       "	_dist = 10^5;" \n
+       "	" \n
+       "	{" \n
+       "		_udist = _x distance _unit;" \n
+       "		if (_udist < _dist) then {_dist = _udist;};" \n
+       "	} forEach _units;" \n
+       "	_dist;" \n
+       "};"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "Ready_">*/
+        class Ready_
+        {
+          priority = 0.000000;
+          to="Begin_Loop";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"typeName allUnits == ""ARRAY"" && typeName playableUnits == ""ARRAY"""/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "Begin_Loop">*/
+    class Begin_Loop
+    {
+      name = "Begin_Loop";
+      init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "Cache_">*/
+        class Cache_
+        {
+          priority = 0.000000;
+          to="Cache";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(_zbe_state == ""UNCACHED"") &&" \n
+           "(([(call ZBE_trigUnits), _vehicle] call ZBE_closeUnit) > (_zbe_dist * 1.1))"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "Cache">*/
+    class Cache
+    {
+      name = "Cache";
+      init = /*%FSM<STATEINIT""">*/"_vehicle enablesimulationglobal false;" \n
+       "_vehicle hideobjectglobal true;" \n
+       "" \n
+       "_zbe_state = ""CACHED"";" \n
+       "" \n
+       "allvehiclescachedzbe = allvehiclescachedzbe + 1;"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "Alive_">*/
+        class Alive_
+        {
+          priority = 0.000000;
+          to="End";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(!alive _vehicle)"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "UnCache_">*/
+        class UnCache_
+        {
+          priority = 0.000000;
+          to="UnCache";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(_zbe_state == ""CACHED"") &&" \n
+           "(([(call ZBE_trigUnits), _vehicle] call ZBE_closeUnit) < _zbe_dist)"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "UnCache">*/
+    class UnCache
+    {
+      name = "UnCache";
+      init = /*%FSM<STATEINIT""">*/"_vehicle enablesimulationglobal true;" \n
+       "_vehicle hideobjectglobal false;" \n
+       "" \n
+       "_zbe_state = ""UNCACHED"";" \n
+       "" \n
+       "if(allvehiclescachedzbe > 0) then {allvehiclescachedzbe = allvehiclescachedzbe - 1;};"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "Cache_">*/
+        class Cache_
+        {
+          priority = 0.000000;
+          to="Cache";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(_zbe_state == ""UNCACHED"") &&" \n
+           "(([(call ZBE_trigUnits), _vehicle] call ZBE_closeUnit) > (_zbe_dist * 1.1))"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "End">*/
+    class End
+    {
+      name = "End";
+      init = /*%FSM<STATEINIT""">*/"if(allvehiclescachedzbe > 0) then {allvehiclescachedzbe = allvehiclescachedzbe - 1;};"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+      };
+    };
+    /*%FSM</STATE>*/
+  };
+  initState="Init_and_functions";
+  finalStates[] =
+  {
+    "End",
+  };
+};
+/*%FSM</COMPILE>*/

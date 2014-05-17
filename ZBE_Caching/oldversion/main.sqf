@@ -21,7 +21,7 @@ Exceptions:
 Vehicle caching FSM - Inspired by CEP_Caching
 */
 
-//Config switches call: [1000,true]execvm "ZBE_Caching\main.sqf"; in init.sqf
+//Config switches call: [1000,true]execvm "ZBE_Caching\main.sqf";
 ZBE_cache_dist = _this select 0;
 ZBE_cache_debug = _this select 1;
 
@@ -92,10 +92,10 @@ ZBE_cacheGroup = {
 				_x disableAI "ANIM";
 				_x disableAI "FSM";
 				_x hideobject true; //Fix for unit labels showing for "invisible" units
-				//_x hideobjectglobal true;
+				_x hideobjectglobal true;
 				_x setSpeedMode "FULL"; //Fix for leader walking (slow) after his buddies are cached
                 _x enableSimulation false;
-				//_x enableSimulationglobal false;
+				_x enableSimulationglobal false;
                 _x allowDamage false; //May turn off additional simulation, unknown but won't hurt. "This command only works locally and must be run on all machines to have global affect." Shouldn't spam netcode https://community.bistudio.com/wiki/allowDamage. Also sets up the uncache allowdamage for respawned units not falling to death on inclines.
                 _pos = getPosATL _x;
                 _pos set [2, -2];
@@ -115,12 +115,12 @@ ZBE_uncacheGroup = {
                 {
                         private["_pos"];
                         if(vehicle _x == _x) then {
-                _x setPosATL (formationPosition _x);
-                _x enableSimulation true;
-				//_x enableSimulationglobal true;
-				//_x hideobjectglobal false; //No need for global commands if client is running caching loop.
-				_x hideobject false; //Fix for unit labels showing for "invisible" units
-				_x setSpeedMode "NORMAL"; //Fix for leader walking after his buddies are cached, sets back to "normal".
+                                _x setPosATL (formationPosition _x);
+                                _x enableSimulation true;
+								_x enableSimulationglobal true;
+								_x hideobject false; //Fix for unit labels showing for "invisible" units
+								_x hideobjectglobal false;
+								_x setSpeedMode "NORMAL"; //Fix for leader walking after his buddies are cached, sets back to "normal".
 				_x enableAI "TARGET";
 				_x enableAI "AUTOTARGET";
 				_x enableAI "MOVE";
@@ -281,7 +281,8 @@ zbe_cached_vehs = [];
 		{
 			if !(_x in zbe_cached_vehs) then {
 				zbe_cached_vehs = zbe_cached_vehs + [_x];
-				if (isDedicated) then {} else {[_x, _Dist] execFSM "ZBE_Caching\zbe_vehiclecaching.fsm";};
+				if (isDedicated) then {[_x, _Dist] execFSM "ZBE_Caching\zbe_vehiclecachingserver.fsm";
+				} else {[_x, _Dist] execFSM "ZBE_Caching\zbe_vehiclecachingclient.fsm";};
 			};
 		} forEach _assets;
 
