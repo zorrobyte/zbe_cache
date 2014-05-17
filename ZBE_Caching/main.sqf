@@ -84,25 +84,36 @@ ZBE_cacheGroup = {
         if(!(_this getVariable ["Cached", false])) then {
                 _this setVariable ["Cached", true];
                 {
-                private["_pos"];
-                if(vehicle _x == _x) then {
-				_x disableAI "TARGET";
-				_x disableAI "AUTOTARGET";
-				_x disableAI "MOVE";
-				_x disableAI "ANIM";
-				_x disableAI "FSM";
-				_x hideobject true; //Fix for unit labels showing for "invisible" units
-				//_x hideobjectglobal true;
-				_x setSpeedMode "FULL"; //Fix for leader walking (slow) after his buddies are cached
+
+        private["_pos"];
+        if(_x != leader _this && !("Driver" in assignedVehicleRole _x)) then {
+                _x disableAI "TARGET";
+                _x disableAI "AUTOTARGET";
+                _x disableAI "MOVE";
+                _x disableAI "ANIM";
+                _x disableAI "FSM";
+                _x setSpeedMode "FULL"; //Fix for leader walking (slow) after his buddies are cached
                 _x enableSimulation false;
-				//_x enableSimulationglobal false;
-                _x allowDamage false; //May turn off additional simulation, unknown but won't hurt. "This command only works locally and must be run on all machines to have global affect." Shouldn't spam netcode https://community.bistudio.com/wiki/allowDamage. Also sets up the uncache allowdamage for respawned units not falling to death on inclines.
-                _pos = getPosATL _x;
-                _pos set [2, -2];
-                _x setPosATL _pos;
-				//deleteVehicle _x;
+                _x allowDamage false;
+				_x hideobject true;
+		if (vehicle _x == _x) then {
+	                _pos = getPosATL _x;
+        	        _pos set [2, -100];
+	                _x setPosATL _pos;
+		};
                 ZBE_cached = ZBE_cached + 1;
-                        };
+	} else {
+                _x allowDamage true;
+				_x hideobject false;
+                _x enableSimulation true;
+                _x setSpeedMode "NORMAL"; //Fix for leader walking (slow) after his buddies are cached
+                _x enableAI "TARGET";
+                _x enableAI "AUTOTARGET";
+                _x enableAI "MOVE";
+                _x enableAI "ANIM";
+                _x enableAI "FSM";
+        };
+				
                 } forEach units _this - [leader _this];
                 publicVariable "ZBE_cached"; //PVAR for debug output? Seems a little wasteful for a release version. May add ZBE_cache_debug switch later on.
         };
@@ -113,26 +124,43 @@ ZBE_uncacheGroup = {
         if(_this getVariable ["Cached",true]) then {
                 _this setVariable ["Cached", false];
                 {
-                        private["_pos"];
-                        if(vehicle _x == _x) then {
-                _x setPosATL (formationPosition _x);
+        if(_x != leader _this && !("Driver" in assignedVehicleRole _x)) then {
+
+		if (vehicle _x == _x) then {
+	                _x setPosATL (formationPosition _x);
+		};
+                [_x]spawn {sleep 3;(_this select 0) allowDamage true;};//Spawned AI on leader dropped to death on inclines. This short sleep should be enough for uncached units to drop to ground without dying. Put in a spawn as to not halt function execution, performance impact should be minimal.
                 _x enableSimulation true;
-				//_x enableSimulationglobal true;
-				//_x hideobjectglobal false; //No need for global commands if client is running caching loop.
-				_x hideobject false; //Fix for unit labels showing for "invisible" units
-				_x setSpeedMode "NORMAL"; //Fix for leader walking after his buddies are cached, sets back to "normal".
-				_x enableAI "TARGET";
-				_x enableAI "AUTOTARGET";
-				_x enableAI "MOVE";
-				_x enableAI "ANIM";
-				_x enableAI "FSM";
-				[_x]spawn {sleep 3;(_this select 0) allowDamage true;};//Spawned AI on leader dropped to death on inclines. This short sleep should be enough for uncached units to drop to ground without dying. Put in a spawn as to not halt function execution, performance impact should be minimal.
+				_x hideobject false;
+                _x setSpeedMode "NORMAL";
+                _x enableAI "TARGET";
+                _x enableAI "AUTOTARGET";
+                _x enableAI "MOVE";
+                _x enableAI "ANIM";
+                _x enableAI "FSM";
 
                                 if(ZBE_cached > 0) then {ZBE_cached = ZBE_cached - 1;};
                         };
                 } forEach units _this - [leader _this];
                 publicVariable "ZBE_cached"; //PVAR for debug output? Seems a little wasteful for a release version. May add ZBE_cache_debug switch later on.
         };
+};
+
+ZBE_syncleader = {
+if (!(simulationEnabled (leader _this))) then {
+	private ["_x"];
+	_x = leader _this;
+
+        _x allowDamage true;
+        _x enableSimulation true;
+        _x hideobject false;        
+        _x enableAI "TARGET";
+        _x enableAI "AUTOTARGET";
+        _x enableAI "MOVE";
+        _x enableAI "ANIM";
+        _x enableAI "FSM";
+//player sidechat format ["Synced %1 TL!",_x];
+};
 };
 
 ZBE_suspendGroup = {
@@ -255,6 +283,7 @@ if(isServer) then {
                         if (_closest < ZBE_cache_dist) then {
                                 _x call ZBE_uncacheGroup;
                         }; //Needs to uncache regardless of server FPS.
+								_x call ZBE_syncleader; //Resyncs group leader if one dies
                 } forEach allGroups;
                 
                 if(ZBE_stats != format["%1 Groups %2/%3 Active/Cached Units %4/%5 All/Cached Vehicles", count allGroups, (count allUnits) - ZBE_cached, ZBE_cached,allvehicleszbe, allvehiclescachedzbe]) then {
@@ -292,7 +321,7 @@ zbe_cached_vehs = [];
 		} forEach zbe_cached_vehs;
 
 
-		_timex = time + 15;
+		_timex = time + 25;
 		allvehicleszbe = count _assets;
 		waitUntil{time > _timex};
 	};
