@@ -1,0 +1,152 @@
+/*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, ZBE_VehicleCaching">*/
+/*%FSM<HEAD>*/
+/*
+item0[] = {"Init_and_functions",0,250,150.952545,-124.118782,285.369690,-74.118797,0.000000,"Init and functions" \n ""};
+item1[] = {"Ready_",8,218,165.697510,-39.548157,255.697525,10.451836,0.000000,"Ready?"};
+item2[] = {"Begin_Loop",3,250,38.540627,-61.665623,128.540588,-11.665672,0.000000,"Begin Loop"};
+item3[] = {"Cache_",8,218,-117.644142,95.191376,-27.644012,145.191467,25.000000,"Cache?"};
+item4[] = {"Cache",2,250,-106.302521,174.015152,-16.302505,224.015152,0.000000,"Cache"};
+item5[] = {"UnCache_",8,4314,7.342773,98.661247,97.343010,148.661224,25.000000,"UnCache?"};
+item6[] = {"UnCache",2,250,-4.480785,172.472382,85.519241,222.472382,0.000000,"UnCache"};
+item7[] = {"Alive_",8,218,-257.492310,140.074570,-167.492310,190.074570,0.000000,"Alive?"};
+item8[] = {"End",1,250,-196.553543,-63.568817,-106.553513,-13.568832,0.000000,"End"};
+link0[] = {0,1};
+link1[] = {1,2};
+link2[] = {2,3};
+link3[] = {3,4};
+link4[] = {4,5};
+link5[] = {4,7};
+link6[] = {5,6};
+link7[] = {6,3};
+link8[] = {7,8};
+globals[] = {0.000000,0,0,0,0,640,480,3,17,6316128,1,-396.686859,409.161285,335.146332,-174.641998,969,613,1};
+window[] = {0,-1,-1,-1,-1,785,26,1382,26,1,987};
+*//*%FSM</HEAD>*/
+class FSM
+{
+  fsmName = "ZBE_VehicleCaching";
+  class States
+  {
+    /*%FSM<STATE "Init_and_functions">*/
+    class Init_and_functions
+    {
+      name = "Init_and_functions";
+      init = /*%FSM<STATEINIT""">*/"_vehicle = _this select 0;" \n
+       "_zbe_dist = _this select 1;" \n
+       "_zbe_state = ""UNCACHED"";"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "Ready_">*/
+        class Ready_
+        {
+          priority = 0.000000;
+          to="Begin_Loop";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"typeName allUnits == ""ARRAY"" && typeName playableUnits == ""ARRAY"""/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "Begin_Loop">*/
+    class Begin_Loop
+    {
+      name = "Begin_Loop";
+      init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "Cache_">*/
+        class Cache_
+        {
+          priority = 25.000000;
+          to="Cache";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_zbe_state == ""UNCACHED"" && (count (crew _vehicle) == 0) && (player distance _vehicle) > (50)"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"player sidechat ""Cache"";"/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "Cache">*/
+    class Cache
+    {
+      name = "Cache";
+      init = /*%FSM<STATEINIT""">*/"_vehicle enablesimulation false;" \n
+       "" \n
+       "_zbe_state = ""CACHED"";" \n
+       "" \n
+       "allvehiclescachedzbe = allvehiclescachedzbe + 1;"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "UnCache_">*/
+        class UnCache_
+        {
+          priority = 25.000000;
+          to="UnCache";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_zbe_state == ""CACHED"" && !(count (crew _vehicle) == 0) || (player distance _vehicle) < (50)"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"player sidechat ""UnCache"";"/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "Alive_">*/
+        class Alive_
+        {
+          priority = 0.000000;
+          to="End";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(!alive _vehicle)"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "UnCache">*/
+    class UnCache
+    {
+      name = "UnCache";
+      init = /*%FSM<STATEINIT""">*/"_vehicle enablesimulation true;" \n
+       "" \n
+       "_zbe_state = ""UNCACHED"";" \n
+       "" \n
+       "if(allvehiclescachedzbe > 0) then {allvehiclescachedzbe = allvehiclescachedzbe - 1;};"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "Cache_">*/
+        class Cache_
+        {
+          priority = 25.000000;
+          to="Cache";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_zbe_state == ""UNCACHED"" && (count (crew _vehicle) == 0) && (player distance _vehicle) > (50)"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"player sidechat ""Cache"";"/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "End">*/
+    class End
+    {
+      name = "End";
+      init = /*%FSM<STATEINIT""">*/"if(allvehiclescachedzbe > 0) then {allvehiclescachedzbe = allvehiclescachedzbe - 1;};"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+      };
+    };
+    /*%FSM</STATE>*/
+  };
+  initState="Init_and_functions";
+  finalStates[] =
+  {
+    "End",
+  };
+};
+/*%FSM</COMPILE>*/
