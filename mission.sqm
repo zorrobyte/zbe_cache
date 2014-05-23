@@ -447,7 +447,7 @@ class Mission
 		};
 		class Item3
 		{
-			position[]={23408.311,3.1900001,18463.996};
+			position[]={23409.318,3.1900001,18474.332};
 			name="cy";
 			text="cycle v4";
 			type="mil_start";

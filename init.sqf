@@ -1,1 +1,1 @@
-[1000,true]execvm "ZBE_Caching\main.sqf";
+[25,true]execvm "ZBE_Caching\main.sqf";

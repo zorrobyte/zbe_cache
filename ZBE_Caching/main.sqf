@@ -114,7 +114,7 @@ ZBE_cacheGroup = {
                 _x enableAI "FSM";
         };
 				
-                } forEach units _this - [leader _this];
+                } forEach units _this;
                 publicVariable "ZBE_cached"; //PVAR for debug output? Seems a little wasteful for a release version. May add ZBE_cache_debug switch later on.
         };
 };
@@ -141,7 +141,7 @@ ZBE_uncacheGroup = {
 
                                 if(ZBE_cached > 0) then {ZBE_cached = ZBE_cached - 1;};
                         };
-                } forEach units _this - [leader _this];
+                } forEach units _this;
                 publicVariable "ZBE_cached"; //PVAR for debug output? Seems a little wasteful for a release version. May add ZBE_cache_debug switch later on.
         };
 };
