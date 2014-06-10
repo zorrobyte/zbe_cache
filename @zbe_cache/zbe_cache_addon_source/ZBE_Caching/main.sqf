@@ -25,55 +25,6 @@ Vehicle caching FSM - Inspired by CEP_Caching
 ZBE_cache_dist = _this select 0;
 ZBE_cache_debug = _this select 1;
 
-//Loop handler functions
-Loop_Funcs = [];
-
-[] spawn {
-
-                       if(!isDedicated) then {
-                        waitUntil { player == player && alive player };
-                };
-                waitUntil {
-		        private ["_f","_delta"];
-                        {
-                                if((count _x) > 0) then {
-                                        _f = _x select 0;
-                                        _delta = _x select 1;
-                                        if(diag_tickTime >= _delta) then {
-                                                [(_f select 2), _forEachIndex] call (_f select 0);
-                                                _x set[1, diag_tickTime + (_f select 1)];
-                                        };
-                                };
-                        } forEach Loop_Funcs;
-                        false;
-                };
-       
-};
-
-remove_loop_handler = {
-private ["_id"];
-        _id = _this select 0;
-        Loop_Funcs set[_id, []];
-};
-
-add_loop_handler = {
-private ["_id","_forEachIndex","_return"];
-_return = -1;
-        _id = -1;
-        {
-                if((count _x) == 0) exitWith {
-                        _id = _forEachIndex;
-                };
-        } forEach Loop_Funcs;
-        if(_id == -1) then {
-                _id = (count Loop_Funcs);
-        };
-        Loop_Funcs set[_id, [_this, 0]];
-        _return = _id;
-
-_return;
-};
-
 //Caching functions
 ZBE_cached = 0;
 ZBE_suspended = 0;
@@ -246,8 +197,8 @@ waitUntil{typeName playableUnits == "ARRAY"};
 //Client loop
 if(!isServer) then {
         diag_log format["%1 ZBE Caching (%2) Starting", time, name player];
-        [{
-                
+[] spawn  {
+while {true} do {
                 {
                         private["_closest"];
                         _closest = [units player, leader _x] call ZBE_closestUnit;
@@ -260,18 +211,19 @@ if(!isServer) then {
                         };
                 } forEach allGroups;
                 
-                if(ZBE_stats != format["%1 Groups %2/%3/%4 All/Suspended/Cached Units %5/%6 All/Cached Vehicles", count allGroups, count allUnits, ZBE_suspended, ZBE_cached, allvehicleszbe, allvehiclescachedzbe]) then {
+                if(ZBE_cache_debug) then {if(ZBE_stats != format["%1 Groups %2/%3/%4 All/Suspended/Cached Units %5/%6 All/Cached Vehicles", count allGroups, count allUnits, ZBE_suspended, ZBE_cached, allvehicleszbe, allvehiclescachedzbe]) then {
                         ZBE_stats = format["%1 Groups %2/%3/%4 All/Suspended/Cached Units %5/%6 All/Cached Vehicles", count allGroups, count allUnits, ZBE_suspended, ZBE_cached, allvehicleszbe, allvehiclescachedzbe];
                         diag_log format["%1 ZBE Caching (%2) # %3", time, name player, ZBE_stats];
-                        if(ZBE_cache_debug) then {hint format["%1 ZBE Caching # %2", time, ZBE_stats];};
-                };
-                
-        }, 1, [ZBE_cache_dist, ZBE_cache_debug]] call add_loop_handler;
+                        hint format["%1 ZBE Caching # %2", time, ZBE_stats];};};  
+			sleep 0.01;						
+        };
+		};
 };
 //Server loop
 if(isServer) then {
         diag_log format["%1 ZBE Caching (%2) Starting", time,"SERVER"];
-        [{
+[]spawn {
+while {true} do {
                 {
                         private["_closest"];
                         _closest = [([leader _x] call ZBE_triggerUnits), leader _x] call ZBE_closestUnit;
@@ -286,14 +238,13 @@ if(isServer) then {
 								_x call ZBE_syncleader; //Resyncs group leader if one dies
                 } forEach allGroups;
                 
-                if(ZBE_stats != format["%1 Groups %2/%3 Active/Cached Units %4/%5 All/Cached Vehicles", count allGroups, (count allUnits) - ZBE_cached, ZBE_cached,allvehicleszbe, allvehiclescachedzbe]) then {
+                if(ZBE_cache_debug) then {if(ZBE_stats != format["%1 Groups %2/%3 Active/Cached Units %4/%5 All/Cached Vehicles", count allGroups, (count allUnits) - ZBE_cached, ZBE_cached,allvehicleszbe, allvehiclescachedzbe]) then {
                         ZBE_stats = format["%1 Groups %2/%3 Active/Cached Units %4/%5 All/Cached Vehicles", count allGroups, (count allUnits) - ZBE_cached, ZBE_cached,allvehicleszbe, allvehiclescachedzbe];
                         diag_log format["%1 ZBE Caching (%2) # %3", time,"SERVER", ZBE_stats];
-                        if(ZBE_cache_debug) then {hint format["%1 ZBE Caching # %2", time, ZBE_stats];};
-				
-                }; //A bit spammy to the RPT. May add ZBE_cache_debug switch later on.
-                
-        }, 3, [ZBE_cache_dist, ZBE_cache_debug]] call add_loop_handler;
+                        hint format["%1 ZBE Caching # %2", time, ZBE_stats];};}; //A bit spammy to the RPT. May add ZBE_cache_debug switch later on.
+						sleep 0.01;
+                };       
+    };
 };
 
 //Vehicle Caching Alpha inspired by CEP_Caching
