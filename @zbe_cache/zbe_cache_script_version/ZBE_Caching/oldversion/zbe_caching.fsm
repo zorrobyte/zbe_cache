@@ -1,0 +1,330 @@
+/*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, ZBE_Caching">*/
+/*%FSM<HEAD>*/
+/*
+item0[] = {"Init_and_functio",0,4346,-67.717896,-14.873198,73.843102,58.412418,0.000000,"Init and functions"};
+item1[] = {"Client_Loop",8,218,-108.216980,-136.265915,-18.216980,-86.265915,0.000000,"Client Loop"};
+item2[] = {"Client_Code",2,250,57.236778,-243.007553,147.236786,-193.007553,0.000000,"Client Code"};
+item3[] = {"Wait",8,218,183.282516,-245.938950,273.282654,-195.938843,0.000000,"Wait"};
+item4[] = {"Server_Loop",8,218,-30.100960,-94.894714,59.898975,-44.894711,0.000000,"Server Loop"};
+item5[] = {"Server_Code",2,250,101.206223,-97.908424,191.206436,-47.908386,0.000000,"Server Code"};
+item6[] = {"Wait",8,218,214.061096,-96.442780,304.061066,-46.442738,0.000000,"Wait"};
+link0[] = {0,1};
+link1[] = {0,4};
+link2[] = {1,2};
+link3[] = {2,3};
+link4[] = {3,2};
+link5[] = {4,5};
+link6[] = {5,6};
+link7[] = {6,5};
+globals[] = {0.000000,0,0,0,0,640,480,3,9,6316128,1,-669.067383,681.540588,507.456390,-346.953003,969,613,1};
+window[] = {0,-1,-1,-1,-1,991,902,2258,232,1,987};
+*//*%FSM</HEAD>*/
+class FSM
+{
+  fsmName = "ZBE_Caching";
+  class States
+  {
+    /*%FSM<STATE "Init_and_functio">*/
+    class Init_and_functio
+    {
+      name = "Init_and_functio";
+      init = /*%FSM<STATEINIT""">*/"ZBE_cached = 0;" \n
+       "ZBE_suspended = 0;" \n
+       "ZBE_stats = """";" \n
+       "" \n
+       "ZBE_cacheGroup = {" \n
+       "        " \n
+       "        if(!(_this getVariable [""Cached"", false])) then {" \n
+       "                _this setVariable [""Cached"", true];" \n
+       "                {" \n
+       "" \n
+       "        private[""_pos""];" \n
+       "        if(_x != leader _this && !(""Driver"" in assignedVehicleRole _x)) then {" \n
+       "                _x disableAI ""TARGET"";" \n
+       "                _x disableAI ""AUTOTARGET"";" \n
+       "                _x disableAI ""MOVE"";" \n
+       "                _x disableAI ""ANIM"";" \n
+       "                _x disableAI ""FSM"";" \n
+       "                _x setSpeedMode ""FULL""; //Fix for leader walking (slow) after his buddies are cached" \n
+       "                _x enableSimulation false;" \n
+       "                _x allowDamage false;" \n
+       "				_x hideobject true;" \n
+       "		if (vehicle _x == _x) then {" \n
+       "	                _pos = getPosATL _x;" \n
+       "        	        _pos set [2, -100];" \n
+       "	                _x setPosATL _pos;" \n
+       "		};" \n
+       "                ZBE_cached = ZBE_cached + 1;" \n
+       "	} else {" \n
+       "                _x allowDamage true;" \n
+       "				_x hideobject false;" \n
+       "                _x enableSimulation true;" \n
+       "                _x setSpeedMode ""NORMAL""; //Fix for leader walking (slow) after his buddies are cached" \n
+       "                _x enableAI ""TARGET"";" \n
+       "                _x enableAI ""AUTOTARGET"";" \n
+       "                _x enableAI ""MOVE"";" \n
+       "                _x enableAI ""ANIM"";" \n
+       "                _x enableAI ""FSM"";" \n
+       "        };" \n
+       "				" \n
+       "                } forEach units _this;" \n
+       "                publicVariable ""ZBE_cached""; //PVAR for debug output? Seems a little wasteful for a release version. May add ZBE_cache_debug switch later on." \n
+       "        };" \n
+       "};" \n
+       "" \n
+       "ZBE_uncacheGroup = {" \n
+       "        " \n
+       "        if(_this getVariable [""Cached"",true]) then {" \n
+       "                _this setVariable [""Cached"", false];" \n
+       "                {" \n
+       "        if(_x != leader _this && !(""Driver"" in assignedVehicleRole _x)) then {" \n
+       "" \n
+       "		if (vehicle _x == _x) then {" \n
+       "	                _x setPosATL (formationPosition _x);" \n
+       "		};" \n
+       "                [_x]spawn {sleep 3;(_this select 0) allowDamage true;};//Spawned AI on leader dropped to death on inclines. This short sleep should be enough for uncached units to drop to ground without dying. Put in a spawn as to not halt function execution, performance impact should be minimal." \n
+       "                _x enableSimulation true;" \n
+       "				_x hideobject false;" \n
+       "                _x setSpeedMode ""NORMAL"";" \n
+       "                _x enableAI ""TARGET"";" \n
+       "                _x enableAI ""AUTOTARGET"";" \n
+       "                _x enableAI ""MOVE"";" \n
+       "                _x enableAI ""ANIM"";" \n
+       "                _x enableAI ""FSM"";" \n
+       "" \n
+       "                                if(ZBE_cached > 0) then {ZBE_cached = ZBE_cached - 1;};" \n
+       "                        };" \n
+       "                } forEach units _this;" \n
+       "                publicVariable ""ZBE_cached""; //PVAR for debug output? Seems a little wasteful for a release version. May add ZBE_cache_debug switch later on." \n
+       "        };" \n
+       "};" \n
+       "" \n
+       "ZBE_syncleader = {" \n
+       "if (!(simulationEnabled (leader _this))) then {" \n
+       "	private [""_x""];" \n
+       "	_x = leader _this;" \n
+       "" \n
+       "        _x allowDamage true;" \n
+       "        _x enableSimulation true;" \n
+       "        _x hideobject false;        " \n
+       "        _x enableAI ""TARGET"";" \n
+       "        _x enableAI ""AUTOTARGET"";" \n
+       "        _x enableAI ""MOVE"";" \n
+       "        _x enableAI ""ANIM"";" \n
+       "        _x enableAI ""FSM"";" \n
+       "//player sidechat format [""Synced %1 TL!"",_x];" \n
+       "};" \n
+       "};" \n
+       "" \n
+       "ZBE_suspendGroup = {" \n
+       "        " \n
+       "        if(!(_this getVariable [""Suspended"", false])) then {" \n
+       "                _this setVariable [""Suspended"", true];" \n
+       "                {" \n
+       "                        _x enableSimulation false;" \n
+       "                        ZBE_suspended = ZBE_suspended + 1;" \n
+       "                } forEach units _this - [leader _this];" \n
+       "        };" \n
+       "};" \n
+       "" \n
+       "ZBE_unsuspendGroup = {" \n
+       "        " \n
+       "        if(_this getVariable [""Suspended"", true]) then {" \n
+       "                _this setVariable [""Suspended"", false];" \n
+       "                {" \n
+       "                        _x enableSimulation true;" \n
+       "                        if(ZBE_suspended > 0) then {ZBE_suspended = ZBE_suspended - 1;};" \n
+       "                } forEach units _this - [leader _this];" \n
+       "        };" \n
+       "};" \n
+       "" \n
+       "ZBE_deleteunitsnotleaderfnc = {" \n
+       "{" \n
+       "deleteVehicle _x;" \n
+       "} forEach units _this - [leader _this];" \n
+       "};" \n
+       "" \n
+       "ZBE_deleteunitsnotleader = {" \n
+       "{" \n
+       "_x call ZBE_deleteunitsnotleaderfnc;" \n
+       "} forEach allGroups;" \n
+       "};" \n
+       "" \n
+       "ZBE_closestUnit = {" \n
+       "        " \n
+       "        private[""_units"", ""_unit"", ""_dist"", ""_udist""];" \n
+       "        _units = _this select 0;" \n
+       "        _unit = _this select 1;" \n
+       "        _dist = 10^5;" \n
+       "        " \n
+       "        {" \n
+       "                _udist = _x distance _unit;" \n
+       "                if (_udist < _dist) then {_dist = _udist;};" \n
+       "        } forEach _units;" \n
+       "        _dist;" \n
+       "};" \n
+       "" \n
+       "ZBE_triggerUnits = {" \n
+       "        " \n
+       "        private [""_ZBE_leader"",""_trigUnits""];" \n
+       "        _ZBE_leader = _this select 0;" \n
+       "        _trigUnits = [];" \n
+       "        {" \n
+       "                if ((((side _x) getFriend (side _ZBE_leader)) <= 0.6)) then {" \n
+       "                        _trigUnits set [count _trigUnits, leader _x];" \n
+       "                };" \n
+       "        } forEach allGroups;" \n
+       "        _trigUnits = _trigUnits + ([] call BIS_fnc_listPlayers);" \n
+       "        _trigUnits;" \n
+       "};" \n
+       "" \n
+       "fn_centerpos = {" \n
+       "private [""_center"",""_return""];" \n
+       "switch toLower(worldName) do {		" \n
+       "        case ""altis"": {" \n
+       "		_return = [15101.8,16846.1,0.00143814];" \n
+       "        };" \n
+       "		default {" \n
+       "		_center = getArray (configFile >> ""CfgWorlds"" >> worldName >> ""centerPosition"");" \n
+       "        _return = _center;" \n
+       "        };" \n
+       "	};" \n
+       "_return;" \n
+       "};" \n
+       "//Vehicle Caching Alpha inspired by CEP_Caching" \n
+       "allvehicleszbe = 0;" \n
+       "allvehiclescachedzbe = 0;" \n
+       "[ZBE_cache_dist, 0] spawn {" \n
+       "private [""_timex"",""_Dist"",""_dly"",""_assets""];" \n
+       "zbe_cached_vehs = [];" \n
+       "	_Dist = _this select 0;" \n
+       "	_dly = _this select 1;" \n
+       "	while {true} do {" \n
+       "	_assets = (call fn_centerpos) nearEntities [[""LandVehicle"",""Air"",""Ship""],50000];" \n
+       "		if(_dly > 0) then {sleep _dly;};" \n
+       "		{" \n
+       "			if !(_x in zbe_cached_vehs) then {" \n
+       "				zbe_cached_vehs = zbe_cached_vehs + [_x];" \n
+       "				if (isDedicated) then {} else {[_x, _Dist] execFSM ""ZBE_Caching\zbe_vehiclecaching.fsm"";};" \n
+       "			};" \n
+       "		} forEach _assets;" \n
+       "" \n
+       "		{" \n
+       "			if (!(_x in _assets)) then {" \n
+       "				zbe_cached_vehs = zbe_cached_vehs - [_x];" \n
+       "			};" \n
+       "		} forEach zbe_cached_vehs;" \n
+       "" \n
+       "" \n
+       "		_timex = time + 25;" \n
+       "		allvehicleszbe = count _assets;" \n
+       "		waitUntil{time > _timex};" \n
+       "	};" \n
+       "};"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "Server_Loop">*/
+        class Server_Loop
+        {
+          priority = 0.000000;
+          to="Server_Code";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"isServer"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "Client_Loop">*/
+        class Client_Loop
+        {
+          priority = 0.000000;
+          to="Client_Code";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!isServer"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "Client_Code">*/
+    class Client_Code
+    {
+      name = "Client_Code";
+      init = /*%FSM<STATEINIT""">*/"private[""_closest""];" \n
+       "_closest = [units player, leader _x] call ZBE_closestUnit;" \n
+       "if (_closest > (ZBE_cache_dist * 1.1)) then {" \n
+       " _x call ZBE_suspendGroup;" \n
+       "          };" \n
+       "                        " \n
+       "    if (_closest < ZBE_cache_dist) then {" \n
+       "          _x call ZBE_unsuspendGroup;" \n
+       "         };" \n
+       "          } forEach allGroups;" \n
+       "                " \n
+       "     if(ZBE_stats != format[""%1 Groups %2/%3/%4 All/Suspended/Cached Units %5/%6 All/Cached Vehicles"", count allGroups, count allUnits, ZBE_suspended, ZBE_cached, allvehicleszbe, allvehiclescachedzbe]) then {" \n
+       "         ZBE_stats = format[""%1 Groups %2/%3/%4 All/Suspended/Cached Units %5/%6 All/Cached Vehicles"", count allGroups, count allUnits, ZBE_suspended, ZBE_cached, allvehicleszbe, allvehiclescachedzbe];" \n
+       "         diag_log format[""%1 ZBE Caching (%2) # %3"", time, name player, ZBE_stats];" \n
+       "      if(ZBE_cache_debug) then {hint format[""%1 ZBE Caching # %2"", time, ZBE_stats];};" \n
+       "_timeoutclient = [] spawn {sleep 0.5;};"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "Wait">*/
+        class Wait
+        {
+          priority = 0.000000;
+          to="Client_Code";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"scriptdone _timeoutclient"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "Server_Code">*/
+    class Server_Code
+    {
+      name = "Server_Code";
+      init = /*%FSM<STATEINIT""">*/"private[""_closest""];" \n
+       "      _closest = [([leader _x] call ZBE_triggerUnits), leader _x] call ZBE_closestUnit;" \n
+       " //if (diag_fps < 40 && {_closest > (ZBE_cache_dist * 1.1)}) then {" \n
+       "		if (_closest > (ZBE_cache_dist * 1.1)) then {" \n
+       "             _x call ZBE_cacheGroup;" \n
+       "     }; //No use caching units if serverFPS is greater then 40. Also used lazy eval for some more performance savings." \n
+       "                        " \n
+       "         if (_closest < ZBE_cache_dist) then {" \n
+       "          _x call ZBE_uncacheGroup;" \n
+       "         }; //Needs to uncache regardless of server FPS." \n
+       "			_x call ZBE_syncleader; //Resyncs group leader if one dies" \n
+       "              } forEach allGroups;" \n
+       "                " \n
+       "       if(ZBE_stats != format[""%1 Groups %2/%3 Active/Cached Units %4/%5 All/Cached Vehicles"", count allGroups, (count allUnits) - ZBE_cached, ZBE_cached,allvehicleszbe, allvehiclescachedzbe]) then {" \n
+       "          ZBE_stats = format[""%1 Groups %2/%3 Active/Cached Units %4/%5 All/Cached Vehicles"", count allGroups, (count allUnits) - ZBE_cached, ZBE_cached,allvehicleszbe, allvehiclescachedzbe];" \n
+       "        diag_log format[""%1 ZBE Caching (%2) # %3"", time,""SERVER"", ZBE_stats];" \n
+       "      if(ZBE_cache_debug) then {hint format[""%1 ZBE Caching # %2"", time, ZBE_stats];};" \n
+       "_timeoutserver = [] spawn {sleep 0.5;};"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "Wait">*/
+        class Wait
+        {
+          priority = 0.000000;
+          to="Server_Code";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"scriptdone _timeoutserver"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+  };
+  initState="Init_and_functio";
+  finalStates[] =
+  {
+  };
+};
+/*%FSM</COMPILE>*/

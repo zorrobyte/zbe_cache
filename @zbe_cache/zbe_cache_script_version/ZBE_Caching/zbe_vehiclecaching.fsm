@@ -4,9 +4,9 @@
 item0[] = {"Init_and_functions",0,250,150.952545,-124.118782,285.369690,-74.118797,0.000000,"Init and functions" \n ""};
 item1[] = {"Ready_",8,218,165.697510,-39.548157,255.697525,10.451836,0.000000,"Ready?"};
 item2[] = {"Begin_Loop",3,250,38.540627,-61.665623,128.540588,-11.665672,0.000000,"Begin Loop"};
-item3[] = {"Cache_",8,218,-117.644142,95.191376,-27.644012,145.191467,25.000000,"Cache?"};
+item3[] = {"Cache_",8,4314,-117.644142,95.191376,-27.644012,145.191467,25.000000,"Cache?"};
 item4[] = {"Cache",2,250,-106.302521,174.015152,-16.302505,224.015152,0.000000,"Cache"};
-item5[] = {"UnCache_",8,4314,7.342773,98.661247,97.343010,148.661224,25.000000,"UnCache?"};
+item5[] = {"UnCache_",8,218,7.342773,98.661247,97.343010,148.661224,25.000000,"UnCache?"};
 item6[] = {"UnCache",2,250,-4.480785,172.472382,85.519241,222.472382,0.000000,"UnCache"};
 item7[] = {"Alive_",8,218,-257.492310,140.074570,-167.492310,190.074570,0.000000,"Alive?"};
 item8[] = {"End",1,250,-196.553543,-63.568817,-106.553513,-13.568832,0.000000,"End"};
@@ -20,7 +20,7 @@ link6[] = {5,6};
 link7[] = {6,3};
 link8[] = {7,8};
 globals[] = {0.000000,0,0,0,0,640,480,3,17,6316128,1,-396.686859,409.161285,335.146332,-174.641998,969,613,1};
-window[] = {0,-1,-1,-1,-1,993,234,1590,234,1,987};
+window[] = {0,-1,-1,-1,-1,785,26,1382,26,1,987};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -64,8 +64,8 @@ class FSM
           priority = 25.000000;
           to="Cache";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"_zbe_state == ""UNCACHED"" && (count (crew _vehicle) == 0) && (player distance _vehicle) > (viewDistance)"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"player sidechat ""Cache"";"/*%FSM</ACTION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_zbe_state == ""UNCACHED"" && (count (crew _vehicle) == 0) && (player distance _vehicle) > (_zbe_dist)"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -89,8 +89,8 @@ class FSM
           priority = 25.000000;
           to="UnCache";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"_zbe_state == ""CACHED"" && !(count (crew _vehicle) == 0) || (player distance _vehicle) < (viewDistance)"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"player sidechat ""UnCache"";"/*%FSM</ACTION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_zbe_state == ""CACHED"" && !(count (crew _vehicle) == 0) || (player distance _vehicle) < (_zbe_dist)"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
         /*%FSM<LINK "Alive_">*/
@@ -124,8 +124,8 @@ class FSM
           priority = 25.000000;
           to="Cache";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"_zbe_state == ""UNCACHED"" && (count (crew _vehicle) == 0) && (player distance _vehicle) > (viewDistance)"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"player sidechat ""Cache"";"/*%FSM</ACTION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_zbe_state == ""UNCACHED"" && (count (crew _vehicle) == 0) && (player distance _vehicle) > (_zbe_dist)"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };

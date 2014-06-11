@@ -24,6 +24,7 @@ Vehicle caching FSM - Inspired by CEP_Caching
 //Config switches call: [1000,true]execvm "ZBE_Caching\main.sqf"; in init.sqf
 ZBE_cache_dist = _this select 0;
 ZBE_cache_debug = _this select 1;
+ZBE_cache_vehicle = _this select 2;
 
 //Caching functions
 ZBE_cached = 0;
@@ -250,7 +251,7 @@ while {true} do {
 //Vehicle Caching Alpha inspired by CEP_Caching
 allvehicleszbe = 0;
 allvehiclescachedzbe = 0;
-[ZBE_cache_dist, 0] spawn {
+[ZBE_cache_vehicle, 0] spawn {
 private ["_timex","_Dist","_dly","_assets"];
 zbe_cached_vehs = [];
 	_Dist = _this select 0;

@@ -20,7 +20,7 @@ link6[] = {5,6};
 link7[] = {6,3};
 link8[] = {7,8};
 globals[] = {0.000000,0,0,0,0,640,480,3,17,6316128,1,-396.686859,409.161285,335.146332,-174.641998,969,613,1};
-window[] = {0,-1,-1,-1,-1,785,26,1382,26,1,987};
+window[] = {0,-1,-1,-1,-1,941,182,1538,182,1,987};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -64,8 +64,8 @@ class FSM
           priority = 25.000000;
           to="Cache";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"_zbe_state == ""UNCACHED"" && (count (crew _vehicle) == 0) && (player distance _vehicle) > (50)"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"player sidechat ""Cache"";"/*%FSM</ACTION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_zbe_state == ""UNCACHED"" && (count (crew _vehicle) == 0) && (player distance _vehicle) > (_zbe_dist)"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -89,8 +89,8 @@ class FSM
           priority = 25.000000;
           to="UnCache";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"_zbe_state == ""CACHED"" && !(count (crew _vehicle) == 0) || (player distance _vehicle) < (50)"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"player sidechat ""UnCache"";"/*%FSM</ACTION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_zbe_state == ""CACHED"" && !(count (crew _vehicle) == 0) || (player distance _vehicle) < (_zbe_dist)"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
         /*%FSM<LINK "Alive_">*/
@@ -124,8 +124,8 @@ class FSM
           priority = 25.000000;
           to="Cache";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"_zbe_state == ""UNCACHED"" && (count (crew _vehicle) == 0) && (player distance _vehicle) > (50)"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"player sidechat ""Cache"";"/*%FSM</ACTION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_zbe_state == ""UNCACHED"" && (count (crew _vehicle) == 0) && (player distance _vehicle) > (_zbe_dist)"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
