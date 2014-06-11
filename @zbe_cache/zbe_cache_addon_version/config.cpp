@@ -5,7 +5,7 @@ class CfgPatches
 		units[] = {};
 		weapons[] = {};
 		requiredVersion = 1.0;
-		requiredAddons[] = {};
+		requiredAddons[] = {"Extended_EventHandlers"};
 		author[] = {"zorrobyte"};
 
 	};
