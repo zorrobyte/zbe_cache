@@ -38,7 +38,7 @@ ZBE_cacheGroup = {
                 {
 
         private["_pos"];
-        if(_x != leader _this && !("Driver" in assignedVehicleRole _x)) then {
+        if(_x != leader _this && {!(isPlayer _x)} && {!("Driver" in assignedVehicleRole _x)}) then {
                 _x disableAI "TARGET";
                 _x disableAI "AUTOTARGET";
                 _x disableAI "MOVE";
@@ -67,7 +67,7 @@ ZBE_cacheGroup = {
         };
 				
                 } forEach units _this;
-                publicVariable "ZBE_cached"; //PVAR for debug output? Seems a little wasteful for a release version. May add ZBE_cache_debug switch later on.
+                if (ZBE_cache_debug) then {publicVariable "ZBE_cached";};
         };
 };
 
@@ -94,7 +94,7 @@ ZBE_uncacheGroup = {
                                 if(ZBE_cached > 0) then {ZBE_cached = ZBE_cached - 1;};
                         };
                 } forEach units _this;
-                publicVariable "ZBE_cached"; //PVAR for debug output? Seems a little wasteful for a release version. May add ZBE_cache_debug switch later on.
+                if (ZBE_cache_debug) then {publicVariable "ZBE_cached";};
         };
 };
 
@@ -111,7 +111,9 @@ if (!(simulationEnabled (leader _this))) then {
         _x enableAI "MOVE";
         _x enableAI "ANIM";
         _x enableAI "FSM";
-//player sidechat format ["Synced %1 TL!",_x];
+if (ZBE_cache_debug) then {
+player sidechat format ["Synced %1 TL!",_x];
+};
 };
 };
 
@@ -177,6 +179,10 @@ ZBE_triggerUnits = {
         _trigUnits;
 };
 
+ZBE_los = {
+//code for line of sight check WIP
+};
+
 fn_centerpos = {
 private ["_center","_return"];
 switch toLower(worldName) do {		
@@ -236,7 +242,7 @@ while {true} do {
                         if (_closest < ZBE_cache_dist) then {
                                 _x call ZBE_uncacheGroup;
                         }; //Needs to uncache regardless of server FPS.
-								_x call ZBE_syncleader; //Resyncs group leader if one dies
+								_x call ZBE_syncleader; //Resyncs group leader if one dies (uncaches)
                 } forEach allGroups;
                 
                 if(ZBE_cache_debug) then {if(ZBE_stats != format["%1 Groups %2/%3 Active/Cached Units %4/%5 All/Cached Vehicles", count allGroups, (count allUnits) - ZBE_cached, ZBE_cached,allvehicleszbe, allvehiclescachedzbe]) then {
