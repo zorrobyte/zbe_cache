@@ -76,7 +76,7 @@ ZBE_uncacheGroup = {
         if(_this getVariable ["Cached",true]) then {
                 _this setVariable ["Cached", false];
                 {
-        if(_x != leader _this && !("Driver" in assignedVehicleRole _x)) then {
+        if(_x != leader _this && {!(isPlayer _x)} && {!("Driver" in assignedVehicleRole _x)}) then {
 
 		if (vehicle _x == _x) then {
 	                _x setPosATL (formationPosition _x);
