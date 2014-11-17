@@ -1,0 +1,244 @@
+/*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, zbe_aiCachingClient">*/
+/*%FSM<HEAD>*/
+/*
+item0[] = {"init",0,250,-193.483002,-91.140106,-103.483002,-41.140106,0.000000,"init"};
+item1[] = {"ready_",4,218,-191.749756,-19.800257,-101.749763,30.199743,0.000000,"ready?"};
+item2[] = {"begin",2,250,-195.216248,65.128845,-105.216232,115.128853,0.000000,"begin"};
+item3[] = {"cache_",4,218,-306.548492,126.416489,-216.548492,176.416489,0.000000,"cache?"};
+item4[] = {"cache",2,250,-305.433960,217.955521,-215.433945,267.955475,0.000000,"cache"};
+item5[] = {"unCache_",4,4314,-193.956940,129.134674,-103.956940,179.134674,0.000000,"unCache?"};
+item6[] = {"unCache",2,250,-193.956955,218.653885,-103.956940,268.653931,0.000000,"unCache"};
+item7[] = {"reSync_leader",4,218,-256.480103,305.309967,-147.280273,362.509857,0.000000,"reSync leader"};
+item8[] = {"disable_dead_",4,218,-396.858551,294.052277,-306.858551,344.052277,0.000000,"disable/dead?"};
+item9[] = {"end",1,250,-467.679901,392.977325,-377.679871,442.977295,0.000000,"end"};
+link0[] = {0,1};
+link1[] = {1,2};
+link2[] = {2,3};
+link3[] = {3,4};
+link4[] = {4,5};
+link5[] = {4,7};
+link6[] = {4,8};
+link7[] = {5,6};
+link8[] = {6,3};
+link9[] = {6,8};
+link10[] = {7,6};
+link11[] = {8,9};
+globals[] = {0.000000,0,0,0,0,640,480,1,16,6316128,1,-602.721497,82.240028,658.401733,-266.995209,490,662,1};
+window[] = {0,-1,-1,-1,-1,912,104,1077,104,1,508};
+*//*%FSM</HEAD>*/
+class FSM
+{
+  fsmName = "zbe_aiCachingClient";
+  class States
+  {
+    /*%FSM<STATE "init">*/
+    class init
+    {
+      name = "init";
+      init = /*%FSM<STATEINIT""">*/"//I'm a very tall midget" \n
+       "private[""_distance"",""_group"",""_leader"",""_state"",""_toCache"",""_fps"",""_debug""];" \n
+       "_distance = _this select 0;" \n
+       "_group = _this select 1;" \n
+       "_fps = _this select 2;" \n
+       "_debug = _this select 3;" \n
+       "if (_fps == -1) then {" \n
+       "if (isDedicated) then {_fps = 25} else {_fps = 45};" \n
+       "}else{_fps = _fps};" \n
+       "_leader = leader _group;" \n
+       "_state = ""UNCACHED"";" \n
+       "" \n
+       "zbe_cache = {" \n
+       "_toCache = (units _group) - [(_leader)];" \n
+       "{" \n
+       "if (!(isPlayer _x) && {!(""driver"" in assignedVehicleRole _x)}) then {" \n
+       "_x enablesimulation false;" \n
+       "_x hideobjectglobal true;" \n
+       "_x hideobject true;" \n
+       "_x hideobjectglobal true;" \n
+       "zbe_cachedUnits = zbe_cachedUnits + 1;" \n
+       "};" \n
+       "} forEach _toCache;" \n
+       "};" \n
+       "" \n
+       "zbe_unCache = {" \n
+       "{" \n
+       "_x enablesimulationglobal true;" \n
+       "_x enablesimulation true;" \n
+       "_x hideobjectglobal false;" \n
+       "_x hideobject false;" \n
+       "zbe_cachedUnits = zbe_cachedUnits - 1;" \n
+       "} forEach _toCache;" \n
+       "};" \n
+       "" \n
+       "zbe_closestUnit = {" \n
+       "        " \n
+       "        private[""_units"", ""_unit"", ""_dist"", ""_udist""];" \n
+       "        _units = _this select 0;" \n
+       "        _unit = _this select 1;" \n
+       "        _dist = 10^5;" \n
+       "        " \n
+       "        {" \n
+       "                _udist = _x distance _unit;" \n
+       "                if (_udist < _dist) then {_dist = _udist;};" \n
+       "        } forEach _units;" \n
+       "        _dist;" \n
+       "};" \n
+       "" \n
+       "zbe_triggerUnits = {" \n
+       "        " \n
+       "        private [""_zbe_leader"",""_trigUnits""];" \n
+       "        _zbe_leader = _this select 0;" \n
+       "        _trigUnits = [];" \n
+       "        {" \n
+       "                if ((((side _x) getFriend (side _zbe_leader)) <= 0.6)) then {" \n
+       "                        _trigUnits set [count _trigUnits, leader _x];" \n
+       "                };" \n
+       "        } forEach allGroups;" \n
+       "        _trigUnits = _trigUnits + ([] call BIS_fnc_listPlayers);" \n
+       "        _trigUnits;" \n
+       "};" \n
+       "" \n
+       "zbe_setpos = {" \n
+       "{" \n
+       "if !(isPlayer _x) then {" \n
+       "		if (vehicle _x == _x) then {" \n
+       "	                _x setPosATL (getPosATL (leader _group));" \n
+       "		};" \n
+       "};" \n
+       "} forEach _toCache;" \n
+       "};" \n
+       ""/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "ready_">*/
+        class ready_
+        {
+          priority = 0.000000;
+          to="begin";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"typeName allUnits == ""ARRAY"" && typeName playableUnits == ""ARRAY"""/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "begin">*/
+    class begin
+    {
+      name = "begin";
+      init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "cache_">*/
+        class cache_
+        {
+          priority = 0.000000;
+          to="cache";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(diag_fps < _fps) && {(_state == ""UNCACHED"")} && " \n
+           "{(([([(_leader)] call zbe_triggerUnits),(_leader)] call zbe_closestUnit) > _distance)}"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "cache">*/
+    class cache
+    {
+      name = "cache";
+      init = /*%FSM<STATEINIT""">*/"call zbe_cache;" \n
+       "_state = ""CACHED"";"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "reSync_leader">*/
+        class reSync_leader
+        {
+          priority = 0.000000;
+          to="unCache";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(!(simulationEnabled (leader _group)))"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"_leader = (leader _group);"/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "disable_dead_">*/
+        class disable_dead_
+        {
+          priority = 0.000000;
+          to="end";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"({alive _x} count units _group == 0) || (_group getVariable ""zbe_cacheDisabled"")"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"call zbe_unCache;"/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "unCache_">*/
+        class unCache_
+        {
+          priority = 0.000000;
+          to="unCache";
+          precondition = /*%FSM<CONDPRECONDITION""">*/"call zbe_setpos;"/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(_state == ""CACHED"") && " \n
+           "{(([([(leader _group)] call zbe_triggerUnits),(leader _group)] call zbe_closestUnit) < _distance)}"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "unCache">*/
+    class unCache
+    {
+      name = "unCache";
+      init = /*%FSM<STATEINIT""">*/"call zbe_unCache;" \n
+       "_state = ""UNCACHED"";"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "disable_dead_">*/
+        class disable_dead_
+        {
+          priority = 0.000000;
+          to="end";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"({alive _x} count units _group == 0) || (_group getVariable ""zbe_cacheDisabled"")"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"call zbe_unCache;"/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "cache_">*/
+        class cache_
+        {
+          priority = 0.000000;
+          to="cache";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(diag_fps < _fps) && {(_state == ""UNCACHED"")} && " \n
+           "{(([([(_leader)] call zbe_triggerUnits),(_leader)] call zbe_closestUnit) > _distance)}"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "end">*/
+    class end
+    {
+      name = "end";
+      init = /*%FSM<STATEINIT""">*/"zbe_cachedGroups = zbe_cachedGroups - [_group];" \n
+       "_group setVariable [""zbe_cacheDisabled"",true]"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+      };
+    };
+    /*%FSM</STATE>*/
+  };
+  initState="init";
+  finalStates[] =
+  {
+    "end",
+  };
+};
+/*%FSM</COMPILE>*/
