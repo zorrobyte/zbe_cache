@@ -13,7 +13,7 @@ class CfgPatches
 
 class Extended_PostInit_EventHandlers
 {
-  ZBE_Cache_Post_Init = "ZBE_Cache_Post_Init_Var = [] execVM ""\zbe_cache\init.sqf""";
+  ZBE_Cache_Post_Init = "ZBE_Cache_Post_Init_Var = [] execVM ""\zbe_cache_addon_version\init.sqf""";
 };
 
 class ZBE_Cache_Key_Setting 
