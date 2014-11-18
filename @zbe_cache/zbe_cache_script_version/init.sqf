@@ -1,8 +1,8 @@
 //[AI Cache Distance,FPS minimum for caching,Debug,Vehicle enablesimulation]execvm "zbe_cache\main.sqf";
 
-//AI Cache Distance is the distance in which AI groups are cached and (optionally) client's objectdrawdistance (so they do not see AI cache/Uncache)
+//AI Cache Distance is the distance in which AI groups are cached
 
-//FPS minimum for caching means that AI groups will not cache as long as FPS is above this number. Setting to -1 sets to predefined settings (if (isDedicated) then {_fps = 25} else {_fps = 45};).
+//FPS minimum for caching means it does nothing as of yet and keep it -1.
 
 //Debug will post to RPT and on screen useful ZBE_Cache metrics such as totalunits, cachedunits, totalvehicles, cachedvehicles
 
