@@ -40,7 +40,7 @@ Caching now works per group using FSMs instead of iterating through allGroups ar
 Installation for Addon version:
 1. UnZIP @ZBE_Cache into Arma 3 directory
 2. Move userconfig folder into Arma 3 directory (\Arma 3\@ZBE_Cache\userconfig -> \Arma 3\userconfig
-3. Set desired options in userconfig (\Arma 3\userconfig\zbe_cache\userconfig.cpp)
+3. Set desired options in userconfig (\Arma 3\userconfig\zbe_cache\zbe_cache.cpp)
 4. Play the game
 
 Installation for script version:
