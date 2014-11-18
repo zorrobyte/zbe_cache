@@ -6,7 +6,7 @@ item1[] = {"ready_",4,218,-191.749756,-19.800257,-101.749763,30.199743,0.000000,
 item2[] = {"begin",2,250,-195.216248,65.128845,-105.216232,115.128853,0.000000,"begin"};
 item3[] = {"cache_",4,218,-306.548492,126.416489,-216.548492,176.416489,1.000000,"cache?"};
 item4[] = {"cache",2,250,-305.433960,217.955521,-215.433945,267.955475,0.000000,"cache"};
-item5[] = {"unCache_",4,218,-193.956940,129.134674,-103.956940,179.134674,1.000000,"unCache?"};
+item5[] = {"unCache_",4,4314,-193.956940,129.134674,-103.956940,179.134674,1.000000,"unCache?"};
 item6[] = {"unCache",2,250,-193.956955,218.653885,-103.956940,268.653931,0.000000,"unCache"};
 item7[] = {"reSync_leader",4,218,-256.480103,305.309967,-147.280273,362.509857,2.000000,"reSync leader"};
 item8[] = {"disabled__allDead",4,218,-396.858551,294.052277,-306.858551,344.052277,3.000000,"disabled/" \n "allDead?"};
@@ -15,7 +15,7 @@ item10[] = {"delay",4,218,-453.643311,137.457932,-363.643311,187.457932,0.000000
 item11[] = {"delayed",2,250,-496.324066,202.799103,-406.323944,252.799118,0.000000,"delayed"};
 item12[] = {"done_delay__and",4,218,-484.096313,272.248962,-394.096191,322.248962,0.000000,"done delay?" \n "and setPos"};
 item13[] = {"delay",4,218,-60.272964,138.074768,29.727036,188.074768,0.000000,"delay"};
-item14[] = {"delayed_1",2,4346,-34.876671,226.961761,55.123352,276.961761,0.000000,"delayed"};
+item14[] = {"delayed_1",2,250,-34.876671,226.961761,55.123352,276.961761,0.000000,"delayed"};
 item15[] = {"done_delay_",4,218,-71.912933,312.674255,18.087072,362.674255,0.000000,"done delay?"};
 item16[] = {"unit_died_",4,218,-396.614685,84.259239,-306.614685,134.259216,1.000000,"unit died?"};
 link0[] = {0,1};
@@ -41,7 +41,7 @@ link19[] = {14,15};
 link20[] = {15,6};
 link21[] = {16,4};
 globals[] = {0.000000,0,0,0,0,640,480,1,27,6316128,1,-684.291809,119.353210,468.304077,-178.913681,822,662,1};
-window[] = {0,-1,-1,-1,-1,834,26,1323,26,1,840};
+window[] = {0,-1,-1,-1,-1,1016,208,1505,208,1,840};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -59,7 +59,7 @@ class FSM
        "_fps = _this select 2;" \n
        "_debug = _this select 3;" \n
        "if (_fps == -1) then {" \n
-       "if (isDedicated) then {_fps = 25} else {_fps = 45};" \n
+       "if (isDedicated) then {_fps = 15} else {_fps = 30};" \n
        "}else{_fps = _fps};" \n
        "_leader = leader _group;" \n
        "_state = ""UNCACHED"";" \n
@@ -75,6 +75,7 @@ class FSM
        "zbe_cachedUnits = zbe_cachedUnits + 1;" \n
        "};" \n
        "} forEach _toCache;" \n
+       "_orgSpeedMode = (speedMode (group _leader));" \n
        "};" \n
        "" \n
        "zbe_unCache = {" \n
@@ -84,8 +85,8 @@ class FSM
        "_x enablesimulation true;" \n
        "_x hideobjectglobal false;" \n
        "_x hideobject false;" \n
-       "};" \n
        "zbe_cachedUnits = zbe_cachedUnits - 1;" \n
+       "};" \n
        "} forEach _toCache;" \n
        "};" \n
        "" \n
@@ -117,11 +118,23 @@ class FSM
        "        _trigUnits;" \n
        "};" \n
        "" \n
-       "zbe_setpos = {" \n
+       "zbe_setPosLight = {" \n
        "{" \n
        "if !(isPlayer _x) then {" \n
        "		if (vehicle _x == _x) then {" \n
-       "	                _x setPosATL (getPosATL (leader _group));" \n
+       "	                _x setPosATL (formationPosition _x);" \n
+       "		};" \n
+       "};" \n
+       "} forEach _toCache;" \n
+       "};" \n
+       "" \n
+       "zbe_setPosFull = {" \n
+       "{" \n
+       "if !(isPlayer _x) then {" \n
+       "		if (vehicle _x == _x) then {" \n
+       "	                _x setPosATL (formationPosition _x);" \n
+       "                      _x allowDamage false;" \n
+       "                     [_x]spawn {sleep 3;(_this select 0) allowDamage true;};" \n
        "		};" \n
        "};" \n
        "} forEach _toCache;" \n
@@ -227,9 +240,10 @@ class FSM
           priority = 1.000000;
           to="unCache";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"(_state == ""CACHED"") && " \n
+          condition=/*%FSM<CONDITION""">*/"(diag_fps > _fps) && {(_state == ""CACHED"")} && " \n
            "{(([([(_leader)] call zbe_triggerUnits),(_leader)] call zbe_closestUnit) < _distance)}"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"call zbe_unCache;" \n
+           "call zbe_setPosFull;" \n
            "_state = ""UNCACHED"";"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -320,7 +334,7 @@ class FSM
           to="cache";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"(scriptdone _timeout)"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"call zbe_setpos;"/*%FSM</ACTION""">*/;
+          action=/*%FSM<ACTION""">*/"call zbe_setPosLight;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };

@@ -26,6 +26,7 @@ Cached AI units in group are setPOS(moved) to TL's position so they can still re
 Units that die while cached are uncached and removed from the caching loop
 If the group leader dies while group is cached, the next group leader is uncached
 Cached empty vehicles can still receive damage and display damage/explosions
+Option to prevent AI from uncaching if FPS lower then set
 Useful RPT/hintSilent debug option
 
 Requirements:
@@ -50,6 +51,9 @@ Installation for script version:
 Disable/Enable group caching:
 Example for unit init from editor: (group this) setVariable ["zbe_cacheDisabled",true]
 Broken down: *groupName* setVariable ["zbe_cacheDisabled",*true/false*]
+
+Minimum FPS limiter:
+Prevents AI from uncaching if FPS is below desired FPS. This can break missions so if you have issues, set it to 0. In dedicated enviorments, I'd think the server staying below 15FPS may be a mission breaker anyway but up to you. Will uncache AI if/when FPS goes above setting.
 
 Extras:
 zbe_clientObjectDrawAuto.fsm is an experimental FSM to auto set client objectDrawDistance based on FPS and no higher than aiCachingRange so players will never see AI uncache. Please vote here if you would like this feature: http://feedback.arma3.com/view.php?id=21746

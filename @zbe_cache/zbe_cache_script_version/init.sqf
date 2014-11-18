@@ -2,7 +2,7 @@
 
 //AI Cache Distance is the distance in which AI groups are cached
 
-//FPS minimum for caching means it does nothing as of yet and keep it -1.
+////If the FPS drops below this number, then prevent AI from uncaching. -1 is for suggested setting (if (isDedicated) then {_fps = 15} else {_fps = 30};)
 
 //Debug will post to RPT and on screen useful ZBE_Cache metrics such as totalunits, cachedunits, totalvehicles, cachedvehicles
 
