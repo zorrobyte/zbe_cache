@@ -34,6 +34,13 @@ Addon version requires CBA
 Script version has no requirements
 
 Changelog:
+v4.1
+ZBE_Cache no longer uses setSpeedMode, the AI in your missions will proceed as your waypoints intend.
+Changed setPos to setPos formationposition so group leaders move full speed (if speedMode "Normal"/"Full").
+Changed zbe_setPos to zbe_setPosLight and zbe_SetPosFull. Light setPos formationPosition, Full setPos formationPosition with 3 second allowdamage false so units don't die on inclines when uncached.
+zbe_aiCachingDedicated.fsm now uses disableai commands for additional performance savings. Client/Listen server does not as disableai can break  animations
+As a note if ran as an addon on server only, client's won't use vehicle caching. If your mission intends to have more then 100 empty vehicles, I strongly recommend using the script version
+v4
 Created new directory and rewrote from scratch
 Caching now works per group using FSMs instead of iterating through allGroups array
 
