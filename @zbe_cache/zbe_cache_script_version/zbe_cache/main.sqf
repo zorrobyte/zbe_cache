@@ -74,7 +74,7 @@ zbe_centerPOS = {
 				};
 		} forEach zbe_cached_vehs;
 
-		uiSleep 15;
+		sleep 15;
 		zbe_allVehicles = count _assets;
 	};
 };

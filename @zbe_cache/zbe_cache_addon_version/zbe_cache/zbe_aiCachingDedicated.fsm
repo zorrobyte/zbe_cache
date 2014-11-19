@@ -41,7 +41,7 @@ link19[] = {14,15};
 link20[] = {15,6};
 link21[] = {16,4};
 globals[] = {0.000000,0,0,0,0,640,480,1,27,6316128,1,-684.291809,119.353210,468.304077,-178.913681,822,662,1};
-window[] = {0,-1,-1,-1,-1,860,52,1349,52,1,840};
+window[] = {0,-1,-1,-1,-1,928,513,1810,120,1,840};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -72,11 +72,11 @@ class FSM
        "_x hideobjectglobal true;" \n
        "_x hideobject true;" \n
        "_x hideobjectglobal true;" \n
-       "_x enableAI ""TARGET"";" \n
-       "_x enableAI ""AUTOTARGET"";" \n
-       "_x enableAI ""MOVE"";" \n
-       "_x enableAI ""ANIM"";" \n
-       "_x enableAI ""FSM"";" \n
+       "_x disableAI ""TARGET"";" \n
+       "_x disableAI ""AUTOTARGET"";" \n
+       "_x disableAI ""MOVE"";" \n
+       "_x disableAI ""ANIM"";" \n
+       "_x disableAI ""FSM"";" \n
        "zbe_cachedUnits = zbe_cachedUnits + 1;" \n
        "};" \n
        "} forEach _toCache;" \n
@@ -89,6 +89,11 @@ class FSM
        "_x enablesimulation true;" \n
        "_x hideobjectglobal false;" \n
        "_x hideobject false;" \n
+       "_x enableAI ""TARGET"";" \n
+       "_x enableAI ""AUTOTARGET"";" \n
+       "_x enableAI ""MOVE"";" \n
+       "_x enableAI ""ANIM"";" \n
+       "_x enableAI ""FSM"";" \n
        "zbe_cachedUnits = zbe_cachedUnits - 1;" \n
        "};" \n
        "} forEach _toCache;" \n
