@@ -10,4 +10,4 @@
 
 //(group this) setVariable ["zbe_cacheDisabled",true] to disable cache for group at anytime. Can disable/enable even during mission runtime.
 
-[1000,-1,true,100]execvm "zbe_cache\main.sqf";
+[1000,-1,true,1000]execvm "zbe_cache\main.sqf";
