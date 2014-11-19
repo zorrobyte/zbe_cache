@@ -121,7 +121,7 @@ class FSM
        "{" \n
        "if !(isPlayer _x) then {" \n
        "		if (vehicle _x == _x) then {" \n
-       "	                _x setPosATL (formationPosition _x);" \n
+       "	                _x setPos (formationPosition _x);" \n
        "		};" \n
        "};" \n
        "} forEach _toCache;" \n
@@ -131,7 +131,7 @@ class FSM
        "{" \n
        "if !(isPlayer _x) then {" \n
        "		if (vehicle _x == _x) then {" \n
-       "	                _x setPosATL (formationPosition _x);" \n
+       "	                _x setPos (formationPosition _x);" \n
        "                      _x allowDamage false;" \n
        "                     [_x]spawn {sleep 3;(_this select 0) allowDamage true;};" \n
        "		};" \n
