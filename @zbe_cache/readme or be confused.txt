@@ -34,6 +34,16 @@ Addon version requires CBA
 Script version has no requirements
 
 Changelog:
+v4.3
+*Critical* FSM would not exit due to FSM condition states hating OR (||) and would loop forever causing poor performance over time and setPOS errors
+Added debug switches for cache start/stop/unit died while cached/synced TL. Baretail Arma's RPT file in \AppData\Local\Arma 3\*.rpt
+v4.2
+Removed _orgSpeedMode (cleanup)
+SetPosATL to SetPos for RPT spam fix (Client: Object 14:32 (type Type_89) not found.)
+Resolved disableAI issue (did nothing) as was not implemented properly for dedicated server
+zbe_vehicleCaching.fsm now uses 500ms delay between checking conditions for less load
+Script version no longer uses enableSimulationGlobal/hideObjectGlobal to save packets as it is assumed it will be running on all localities. (Addon version still uses global commands so only the server can run addon, addon still doesn't do empty vehicle caching unless clients run addon as well)
+Updated empty vehicle caching to 1000m until per vehicletype distance is added
 v4.1
 ZBE_Cache no longer uses setSpeedMode, the AI in your missions will proceed as your waypoints intend.
 Changed setPos to setPos formationposition so group leaders move full speed (if speedMode "Normal"/"Full").
