@@ -9,8 +9,8 @@ item4[] = {"cache",2,250,-305.433960,217.955521,-215.433945,267.955475,0.000000,
 item5[] = {"unCache_",4,218,-193.956940,129.134674,-103.956940,179.134674,1.000000,"unCache?"};
 item6[] = {"unCache",2,250,-193.956955,218.653885,-103.956940,268.653931,0.000000,"unCache"};
 item7[] = {"reSync_leader",4,218,-256.480103,305.309967,-147.280273,362.509857,2.000000,"reSync leader"};
-item8[] = {"disabled__allDead",4,218,-396.858551,294.052277,-306.858551,344.052277,3.000000,"disabled/" \n "allDead?"};
-item9[] = {"end",1,250,-519.399780,373.085114,-429.399597,423.085083,0.000000,"end"};
+item8[] = {"allDead_",4,218,-396.858551,304.806641,-306.858551,354.806641,3.000000,"allDead?"};
+item9[] = {"end",1,250,-519.399902,383.839478,-429.399597,433.839447,0.000000,"end"};
 item10[] = {"delay",4,218,-453.643311,137.457932,-363.643311,187.457932,0.000000,"delay"};
 item11[] = {"delayed",2,250,-496.324066,202.799103,-406.323944,252.799118,0.000000,"delayed"};
 item12[] = {"done_delay__and",4,218,-484.096313,272.248962,-394.096191,322.248962,0.000000,"done delay?" \n "and setPos"};
@@ -18,6 +18,7 @@ item13[] = {"delay",4,218,-60.272964,138.074768,29.727036,188.074768,0.000000,"d
 item14[] = {"delayed_1",2,250,-34.876671,226.961761,55.123352,276.961761,0.000000,"delayed"};
 item15[] = {"done_delay_",4,218,-71.912933,312.674255,18.087072,362.674255,0.000000,"done delay?"};
 item16[] = {"unit_died_",4,218,-396.614685,84.259239,-306.614685,134.259216,1.000000,"unit died?"};
+item17[] = {"disabled_",4,218,-363.643097,367.045807,-273.643097,417.045837,3.000000,"disabled?"};
 link0[] = {0,1};
 link1[] = {1,2};
 link2[] = {2,3};
@@ -29,8 +30,8 @@ link7[] = {4,10};
 link8[] = {4,16};
 link9[] = {5,6};
 link10[] = {6,3};
-link11[] = {6,8};
-link12[] = {6,13};
+link11[] = {6,13};
+link12[] = {6,17};
 link13[] = {7,6};
 link14[] = {8,9};
 link15[] = {10,11};
@@ -40,8 +41,9 @@ link18[] = {13,14};
 link19[] = {14,15};
 link20[] = {15,6};
 link21[] = {16,4};
-globals[] = {0.000000,0,0,0,0,640,480,1,27,6316128,1,-684.291809,119.353210,468.304077,-178.913681,822,662,1};
-window[] = {0,-1,-1,-1,-1,860,52,1349,52,1,840};
+link22[] = {17,9};
+globals[] = {0.000000,0,0,0,0,640,480,1,30,6316128,1,-684.291809,119.353210,468.304077,-178.913681,822,662,1};
+window[] = {0,-1,-1,-1,-1,990,182,1479,182,1,840};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -140,6 +142,9 @@ class FSM
        "if !(alive _x) then {" \n
        "_x enablesimulation true;" \n
        "_x hideobject false;" \n
+       "if (zbe_debug) then {" \n
+       "diag_log format [""ZBE_Cache %1 died while cached from group %2, uncaching and removing from cache loop"",_x,_group];" \n
+       "};" \n
        "_toCache = _toCache - [_x];" \n
        "zbe_cachedUnits = zbe_cachedUnits - 1;" \n
        "};" \n
@@ -167,7 +172,10 @@ class FSM
     {
       name = "begin";
       init = /*%FSM<STATEINIT""">*/"private[""_groupcount""];" \n
-       "_groupCount = ({alive _x} count units _group);"/*%FSM</STATEINIT""">*/;
+       "_groupCount = ({alive _x} count units _group);" \n
+       "if (zbe_debug) then {" \n
+       "diag_log format [""ZBE_Cache starting for group %1"",_group];" \n
+       "};"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
@@ -194,13 +202,13 @@ class FSM
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
-        /*%FSM<LINK "disabled__allDead">*/
-        class disabled__allDead
+        /*%FSM<LINK "allDead_">*/
+        class allDead_
         {
           priority = 3.000000;
           to="end";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"({alive _x} count units _group == 0) || (_group getVariable ""zbe_cacheDisabled"")"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"({alive _x} count units _group == 0)"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"call zbe_unCache;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -213,7 +221,10 @@ class FSM
           condition=/*%FSM<CONDITION""">*/"!(simulationEnabled (leader _group))"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"_leader = (leader _group);" \n
            "call zbe_unCache;" \n
-           "_state = ""UNCACHED"";"/*%FSM</ACTION""">*/;
+           "_state = ""UNCACHED"";" \n
+           "if (zbe_debug) then {" \n
+           "diag_log format [""ZBE_Cache leader synced for %1, uncached %2"",_group,_leader];" \n
+           "};"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
         /*%FSM<LINK "unit_died_">*/
@@ -261,14 +272,14 @@ class FSM
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
-        /*%FSM<LINK "disabled__allDead">*/
-        class disabled__allDead
+        /*%FSM<LINK "disabled_">*/
+        class disabled_
         {
           priority = 3.000000;
           to="end";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"({alive _x} count units _group == 0) || (_group getVariable ""zbe_cacheDisabled"")"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"call zbe_unCache;"/*%FSM</ACTION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(_group getVariable ""zbe_cacheDisabled"")"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
         /*%FSM<LINK "cache_">*/
@@ -301,7 +312,10 @@ class FSM
     {
       name = "end";
       init = /*%FSM<STATEINIT""">*/"zbe_cachedGroups = zbe_cachedGroups - [_group];" \n
-       "_group setVariable [""zbe_cacheDisabled"",true]"/*%FSM</STATEINIT""">*/;
+       "_group setVariable [""zbe_cacheDisabled"",true];" \n
+       "if (zbe_debug) then {" \n
+       "diag_log format [""ZBE_Cache ending for group %1"",_group];" \n
+       "};"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
