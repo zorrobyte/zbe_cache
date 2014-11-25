@@ -1,14 +1,14 @@
-/*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, zbe_aiCachingClient">*/
+/*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, zbe_aiCaching">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"init",0,250,-193.483002,-91.140106,-103.483002,-41.140106,0.000000,"init"};
+item0[] = {"init",0,4346,-193.483002,-91.140106,-103.483002,-41.140106,0.000000,"init"};
 item1[] = {"ready_",4,218,-191.749756,-19.800257,-101.749763,30.199743,0.000000,"ready?"};
 item2[] = {"begin",2,250,-195.216248,65.128845,-105.216232,115.128853,0.000000,"begin"};
 item3[] = {"cache_for_AI_",4,218,-306.548492,126.416489,-216.548492,176.416489,1.000000,"cache" \n "for AI?"};
 item4[] = {"cache",2,250,-305.433960,217.955521,-215.433945,267.955475,0.000000,"cache"};
 item5[] = {"unCache_for_AI_",4,218,-193.956940,129.134674,-103.956940,179.134674,1.000000,"unCache" \n "for AI?"};
 item6[] = {"unCache",2,250,-193.956955,218.653885,-103.956940,268.653931,0.000000,"unCache"};
-item7[] = {"reSync_leader",4,4314,-256.480103,305.309967,-147.280273,362.509857,2.000000,"reSync leader"};
+item7[] = {"reSync_leader",4,218,-256.480103,305.309967,-147.280273,362.509857,2.000000,"reSync leader"};
 item8[] = {"allDead_",4,218,-396.858551,304.806641,-306.858551,354.806641,3.000000,"allDead?"};
 item9[] = {"end",1,250,-519.399902,383.839478,-429.399597,433.839447,0.000000,"end"};
 item10[] = {"delay",4,218,-453.643311,137.457932,-363.643311,187.457932,0.000000,"delay"};
@@ -48,12 +48,12 @@ link23[] = {15,6};
 link24[] = {16,4};
 link25[] = {17,9};
 link26[] = {18,19};
-globals[] = {0.000000,0,0,0,0,640,480,1,36,6316128,1,-721.906189,451.496735,484.777985,-240.518692,1071,662,1};
-window[] = {0,-1,-1,-1,-1,860,52,1723,52,1,1089};
+globals[] = {0.000000,0,0,0,0,640,480,1,36,6316128,1,-533.988037,263.579132,368.623474,-124.363876,1071,662,1};
+window[] = {0,-1,-1,-1,-1,834,26,1697,26,1,1089};
 *//*%FSM</HEAD>*/
 class FSM
 {
-  fsmName = "zbe_aiCachingClient";
+  fsmName = "zbe_aiCaching";
   class States
   {
     /*%FSM<STATE "init">*/
@@ -75,10 +75,7 @@ class FSM
        "_toCache = (units _group) - [(_leader)];" \n
        "{" \n
        "if (!(isPlayer _x) && {!(""driver"" in assignedVehicleRole _x)}) then {" \n
-       "_x enablesimulation false;" \n
-       "_x hideobject true;" \n
        "_x enablesimulationglobal false;" \n
-       "_x hideobjectglobal true;" \n
        "zbe_cachedUnits = zbe_cachedUnits + 1;" \n
        "};" \n
        "} forEach _toCache;" \n
@@ -87,10 +84,7 @@ class FSM
        "zbe_unCache = {" \n
        "{" \n
        "if (!(isPlayer _x) && {!(""driver"" in assignedVehicleRole _x)}) then {" \n
-       "_x enablesimulation true;" \n
-       "_x hideobject false;" \n
        "_x enablesimulationglobal true;" \n
-       "_x hideobjectglobal false;" \n
        "zbe_cachedUnits = zbe_cachedUnits - 1;" \n
        "};" \n
        "} forEach _toCache;" \n
