@@ -34,6 +34,9 @@ Addon version requires CBA
 Script version has no requirements
 
 Changelog:
+v4.4c
+Fixed missing }; for script version
+Added per vehicle type caching distance setting (Car,Air,Boat)
 v4.4b
 Changed setPosASL back to setPos so units don't spawn outside buildings thanks to Zriel
 Improved debug readability thanks to whiztler
