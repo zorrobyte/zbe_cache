@@ -44,7 +44,7 @@ sleep 5;
 			_disable = if(isNil "_disable") then { false; } else {_disable;};
 			if (!_disable && !(_x in zbe_cachedGroups)) then {
 				zbe_cachedGroups = zbe_cachedGroups + [_x];
-				if (!isDedicated) then {[zbe_aiCacheDist,_x,zbe_minFrameRate,zbe_debug] execFSM "\zbe_cache_addon_version\zbe_cache\zbe_aiCachingClient.fsm";} else {[zbe_aiCacheDist,_x,zbe_minFrameRate,zbe_debug] execFSM "\zbe_cache_addon_version\zbe_cache\zbe_aiCachingDedicated.fsm";};
+				if (isServer) then {[zbe_aiCacheDist,_x,zbe_minFrameRate,zbe_debug] execFSM "\zbe_cache_addon_version\zbe_cache\zbe_aiCaching.fsm";};
 			};
 		} forEach allGroups;
 		};					
@@ -74,14 +74,26 @@ zbe_cached_vehs = [];
 	};
 };
 
-[] spawn {
-while {true} do {
-uiSleep 15;
-	if(zbe_debug) then {
-    zbe_stats = format["%1 Groups %2/%3 All/Cached Units %4/%5 All/Cached Vehicles %6 FPS %7 ObjectDrawDistance", count allGroups, count allUnits, zbe_cachedUnits, zbe_allVehicles, zbe_cachedVehicles, (round diag_fps), zbe_objectView];
-    diag_log format["%1 ZBE_Caching (%2) # %3", (round time), name player, zbe_stats];
-    hintSilent format["%1 ZBE_Caching # %2", (round time), zbe_stats];};  
-};
-};
+[] spawn { 
+    if (zbe_debug) then { 
+        while {true} do { 
+            uiSleep 15;  
+            hintSilent parseText format [" 
+                <t color='#FFFFFF' size='1.5'>ZBE Caching</t><br/> 
+                <t color='#FFFFFF'>Caching debug Data</t><br/><br/> 
+                <t color='#A1A4AD' align='left'>Game time in seconds:</t><t color='#FFFFFF' align='right'>%1</t><br/><br/>                 
+                <t color='#A1A4AD' align='left'>Number of groups:</t><t color='#FFFFFF' align='right'>%2</t><br/>                 
+                <t color='#A1A4AD' align='left'>All units:</t><t color='#FFFFFF' align='right'>%3</t><br/> 
+                <t color='#A1A4AD' align='left'>Cached units:</t><t color='#39a0ff' align='right'>%4</t><br/><br/> 
+                <t color='#A1A4AD' align='left'>All vehicles:</t><t color='#FFFFFF' align='right'>%5</t><br/> 
+                <t color='#A1A4AD' align='left'>Cached vehicles:</t><t color='#39a0ff' align='right'>%6</t><br/><br/> 
+                <t color='#A1A4AD' align='left'>FPS:</t><t color='#FFFFFF' align='right'>%7</t><br/><br/> 
+                <t color='#A1A4AD' align='left'>Obj draw distance:</t><t color='#FFFFFF' align='right'>%8</t><br/> 
+            ",(round time),count allGroups, count allUnits, zbe_cachedUnits, zbe_allVehicles, zbe_cachedVehicles, (round diag_fps), zbe_objectView]; 
+            zbe_log_stats = format ["Groups: %1 # All/Cached Units: %2/%3 # All/Cached Vehicles: %4/%5 # FPS: %6 # ObjectDrawDistance: %7", count allGroups, count allUnits, zbe_cachedUnits, zbe_allVehicles, zbe_cachedVehicles, (round diag_fps), zbe_objectView]; 
+            diag_log format ["%1 ZBE_Caching (%2) ---  %3", (round time), name player, zbe_log_stats];     
+        }; 
+    }; 
+}; 
 //Experimental, disabled for now
 //if (!isDedicated) then {execFSM "\zbe_cache_addon_version\zbe_cache\zbe_clientObjectDrawAuto.fsm";};

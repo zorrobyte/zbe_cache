@@ -1,4 +1,4 @@
-/*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, zbe_aiCachingDedicated">*/
+/*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, zbe_aiCachingClient">*/
 /*%FSM<HEAD>*/
 /*
 item0[] = {"init",0,250,-193.483002,-91.140106,-103.483002,-41.140106,0.000000,"init"};
@@ -48,12 +48,12 @@ link23[] = {15,6};
 link24[] = {16,4};
 link25[] = {17,9};
 link26[] = {18,19};
-globals[] = {0.000000,0,0,0,0,640,480,1,36,6316128,1,-533.988037,263.579132,368.623474,-124.363876,1071,662,1};
-window[] = {0,-1,-1,-1,-1,964,156,1827,156,1,1089};
+globals[] = {0.000000,0,0,0,0,640,480,1,36,6316128,1,-721.906189,451.496735,484.777985,-240.518692,1071,662,1};
+window[] = {0,-1,-1,-1,-1,860,52,1723,52,1,1089};
 *//*%FSM</HEAD>*/
 class FSM
 {
-  fsmName = "zbe_aiCachingDedicated";
+  fsmName = "zbe_aiCachingClient";
   class States
   {
     /*%FSM<STATE "init">*/
@@ -79,11 +79,6 @@ class FSM
        "_x hideobject true;" \n
        "_x enablesimulationglobal false;" \n
        "_x hideobjectglobal true;" \n
-       "_x disableAI ""TARGET"";" \n
-       "_x disableAI ""AUTOTARGET"";" \n
-       "_x disableAI ""MOVE"";" \n
-       "_x disableAI ""ANIM"";" \n
-       "_x disableAI ""FSM"";" \n
        "zbe_cachedUnits = zbe_cachedUnits + 1;" \n
        "};" \n
        "} forEach _toCache;" \n
@@ -96,11 +91,6 @@ class FSM
        "_x hideobject false;" \n
        "_x enablesimulationglobal true;" \n
        "_x hideobjectglobal false;" \n
-       "_x enableAI ""TARGET"";" \n
-       "_x enableAI ""AUTOTARGET"";" \n
-       "_x enableAI ""MOVE"";" \n
-       "_x enableAI ""ANIM"";" \n
-       "_x enableAI ""FSM"";" \n
        "zbe_cachedUnits = zbe_cachedUnits - 1;" \n
        "};" \n
        "} forEach _toCache;" \n
@@ -138,7 +128,7 @@ class FSM
        "{" \n
        "if !(isPlayer _x) then {" \n
        "		if (vehicle _x == _x) then {" \n
-       "	                _x setPosASL (formationPosition _x);" \n
+       "	                _x setPos (formationPosition _x);" \n
        "		};" \n
        "};" \n
        "} forEach _toCache;" \n
@@ -148,7 +138,7 @@ class FSM
        "{" \n
        "if !(isPlayer _x) then {" \n
        "		if (vehicle _x == _x) then {" \n
-       "	                _x setPosASL (formationPosition _x);" \n
+       "	                _x setPos (formationPosition _x);" \n
        "                      _x allowDamage false;" \n
        "                     [_x]spawn {sleep 3;(_this select 0) allowDamage true;};" \n
        "		};" \n
