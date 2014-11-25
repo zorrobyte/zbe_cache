@@ -8,7 +8,7 @@
                                 /\______\                                              /\____/
                                 \/______/                                              \_/__/ 
 								
-ZBE_Cache V4
+ZBE_Cache
 
 License:
 ZBE_Cache by Zorrobyte is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.
