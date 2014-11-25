@@ -8,10 +8,10 @@
                                 /\______\                                              /\____/
                                 \/______/                                              \_/__/ 
 								
-ZBE_Caching V4
+ZBE_Cache V4
 
 License:
-ZBE_Caching by Zorrobyte is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.
+ZBE_Cache by Zorrobyte is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.
 Based on a work at https://bitbucket.org/zorrobyte/zbe_cache.
 https://creativecommons.org/licenses/by-sa/4.0/
 

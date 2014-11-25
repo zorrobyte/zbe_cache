@@ -88,7 +88,7 @@ zbe_deleteunitsnotleader = {
                 <t color='#A1A4AD' align='left'>Obj draw distance:</t><t color='#FFFFFF' align='right'>%8</t><br/> 
             ",(round time),count allGroups, count allUnits, zbe_cachedUnits, zbe_allVehicles, zbe_cachedVehicles, (round diag_fps), zbe_objectView]; 
             zbe_log_stats = format ["Groups: %1 # All/Cached Units: %2/%3 # All/Cached Vehicles: %4/%5 # FPS: %6 # ObjectDrawDistance: %7", count allGroups, count allUnits, zbe_cachedUnits, zbe_allVehicles, zbe_cachedVehicles, (round diag_fps), zbe_objectView]; 
-            diag_log format ["%1 ZBE_Caching (%2) ---  %3", (round time), name player, zbe_log_stats];     
+            diag_log format ["%1 ZBE_Cache (%2) ---  %3", (round time), name player, zbe_log_stats];     
         }; 
     }; 
 }; 
