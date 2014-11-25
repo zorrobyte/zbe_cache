@@ -1,7 +1,9 @@
-zbe_aiCacheDist	     = _this select 0;
-zbe_minFrameRate     = _this select 1;
-zbe_debug	     = _this select 2;
-zbe_vehicleCacheDist = _this select 3;
+zbe_aiCacheDist = _this select 0;
+zbe_minFrameRate = _this select 1;
+zbe_debug = _this select 2;
+zbe_vehicleCacheCar = _this select 3;
+zbe_vehicleCacheAir = _this select 4;
+zbe_vehicleCacheBoat = _this select 5;
 
 zbe_allGroups	   = 0;
 zbe_cachedGroups   = [];
@@ -46,26 +48,39 @@ zbe_deleteunitsnotleader = {
 		} forEach allGroups;
 	};
 
-// Vehicle Caching Beta (for client FPS)
+//Vehicle Caching Beta (for client FPS)
 [] spawn {
-	private ["_assets"];
-	zbe_cached_vehs = [];
+private ["_assetscar","_assetsair","_assetsboat"];
+zbe_cached_vehs = [];
 	while {true} do {
-		_assets = zbe_centerPOS nearEntities [ ["LandVehicle", "Air", "Ship"], 25000];
+	_assetscar = zbe_centerPOS nearEntities ["LandVehicle", 25000];
 		{
 			if !(_x in zbe_cached_vehs) then {
 				zbe_cached_vehs = zbe_cached_vehs + [_x];
-				if (isServer) then { [_x, zbe_vehicleCacheDist] execFSM "zbe_cache\zbe_vehicleCaching.fsm";
-					};
+				if (isServer) then {[_x, zbe_vehicleCacheDistCar] execFSM "zbe_cache\zbe_vehicleCaching.fsm"};
 			};
-		} forEach _assets;
+		} forEach _assetscar;
+	_assetsair = zbe_centerPOS nearEntities ["Air", 25000];
+		{
+			if !(_x in zbe_cached_vehs) then {
+				zbe_cached_vehs = zbe_cached_vehs + [_x];
+				if (isServer) then {[_x, zbe_vehicleCacheDistAir] execFSM "zbe_cache\zbe_vehicleCaching.fsm"};
+			};
+		} forEach _assetsair;
+	_assetsboat = zbe_centerPOS nearEntities ["Ship", 25000];
+		{
+			if !(_x in zbe_cached_vehs) then {
+				zbe_cached_vehs = zbe_cached_vehs + [_x];
+				if (isServer) then {[_x, zbe_vehicleCacheDistBoat] execFSM "zbe_cache\zbe_vehicleCaching.fsm"};
+			};
+		} forEach _assetsboat;
 
 		{
-			if (!(_x in _assets)) then {
-					zbe_cached_vehs = zbe_cached_vehs - [_x];
-				};
+			if (!(_x in _assetscar)) || (!(_x in _assetsair)) || (!(_x in _assetsboat)) then {
+				zbe_cached_vehs = zbe_cached_vehs - [_x];
+			};
 		} forEach zbe_cached_vehs;
-
+		
 		sleep 15;
 		zbe_allVehicles = count _assets;
 	};
