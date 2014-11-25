@@ -47,7 +47,7 @@ zbe_deleteunitsnotleader = {
 				};
 		} forEach allGroups;
 	};
-
+};
 //Vehicle Caching Beta (for client FPS)
 [] spawn {
 private ["_assetscar","_assetsair","_assetsboat"];
