@@ -22,7 +22,6 @@ _x call zbe_deleteunitsnotleaderfnc;
 } forEach allGroups;
 };
 
-zbe_centerPOS = {
 	switch toLower(worldName) do { 
     case "altis": { 
         zbe_centerPOS = [15101.8, 16846.1, 0.00143814]; 
@@ -31,7 +30,6 @@ zbe_centerPOS = {
         zbe_centerPOS = getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition"); 
     }; 
 }; 
-};
 
 [] spawn  {
 while {true} do {
