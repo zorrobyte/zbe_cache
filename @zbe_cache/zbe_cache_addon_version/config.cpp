@@ -5,15 +5,25 @@ class CfgPatches
 		units[] = {};
 		weapons[] = {};
 		requiredVersion = 1.0;
-		requiredAddons[] = {"Extended_EventHandlers"};
+		requiredAddons[] = {};
 		author[] = {"zorrobyte"};
 
 	};
 };
 
-class Extended_PostInit_EventHandlers
+class CfgFunctions
 {
-  ZBE_Cache_Post_Init = "ZBE_Cache_Post_Init_Var = [] execVM ""\zbe_cache_addon_version\init.sqf""";
+    class ZBE
+    {
+        class Cache
+        {
+            class Cache_Init
+            {
+                file = "zbe_cache_addon_version\init.sqf";
+                preInit = 1;
+            };
+        };
+    };
 };
 
 class ZBE_Cache_Key_Setting 
