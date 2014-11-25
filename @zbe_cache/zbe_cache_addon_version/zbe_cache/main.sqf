@@ -56,7 +56,7 @@ zbe_cached_vehs = [];
 		{
 			if !(_x in zbe_cached_vehs) then {
 				zbe_cached_vehs = zbe_cached_vehs + [_x];
-				if (isDedicated) then {} else {[_x, zbe_vehicleCacheDist] execFSM "\zbe_cache_addon_version\zbe_cache\zbe_vehicleCaching.fsm";};
+				if (isServer) then {[_x, zbe_vehicleCacheDist] execFSM "\zbe_cache_addon_version\zbe_cache\zbe_vehicleCaching.fsm";};
 			};
 		} forEach _assets;
 

@@ -35,7 +35,7 @@ zbe_centerPOS = {
 
 [] spawn  {
 	while {true} do {
-		uisleep 5;
+		sleep 5;
 		{
 			_disable = _x getVariable "zbe_cacheDisabled";
 			_disable = if (isNil "_disable") then { false;
@@ -43,11 +43,10 @@ zbe_centerPOS = {
 				};
 			if (!_disable && !(_x in zbe_cachedGroups)) then {
 					zbe_cachedGroups = zbe_cachedGroups + [_x];
-					if (isServer) then { [zbe_aiCacheDist, _x, zbe_minFrameRate, zbe_debug] execFSM "zbe_cache\zbe_aiCachingClient.fsm";};
+					if (isServer) then { [zbe_aiCacheDist, _x, zbe_minFrameRate, zbe_debug] execFSM "zbe_cache\zbe_aiCaching.fsm";};
 				};
 		} forEach allGroups;
 	};
-};
 
 // Vehicle Caching Beta (for client FPS)
 [] spawn {
@@ -58,7 +57,7 @@ zbe_centerPOS = {
 		{
 			if !(_x in zbe_cached_vehs) then {
 				zbe_cached_vehs = zbe_cached_vehs + [_x];
-				if (isDedicated) then {} else { [_x, zbe_vehicleCacheDist] execFSM "zbe_cache\zbe_vehicleCaching.fsm";
+				if (isServer) then { [_x, zbe_vehicleCacheDist] execFSM "zbe_cache\zbe_vehicleCaching.fsm";
 					};
 			};
 		} forEach _assets;
