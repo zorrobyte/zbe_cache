@@ -23,17 +23,14 @@ _x call zbe_deleteunitsnotleaderfnc;
 };
 
 zbe_centerPOS = {
-private ["_center","_return"];
-switch toLower(worldName) do {		
-        case "altis": {
-		_return = [15101.8,16846.1,0.00143814];
-        };
-		default {
-		_center = getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition");
-        _return = _center;
-        };
-	};
-_return;
+	switch toLower(worldName) do { 
+    case "altis": { 
+        zbe_centerPOS = [15101.8, 16846.1, 0.00143814]; 
+    }; 
+    default { 
+        zbe_centerPOS = getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition"); 
+    }; 
+}; 
 };
 
 [] spawn  {
@@ -55,7 +52,7 @@ sleep 5;
 private ["_assets"];
 zbe_cached_vehs = [];
 	while {true} do {
-	_assets = (call zbe_centerPOS) nearEntities [["LandVehicle","Air","Ship"],50000];
+	_assets = zbe_centerPOS nearEntities [ ["LandVehicle", "Air", "Ship"], 25000];
 		{
 			if !(_x in zbe_cached_vehs) then {
 				zbe_cached_vehs = zbe_cached_vehs + [_x];
