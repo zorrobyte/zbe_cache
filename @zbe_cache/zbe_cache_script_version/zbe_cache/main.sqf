@@ -78,9 +78,15 @@ case "altis": {
 		} forEach _assetsboat;
 
 		{
-			if ((!(_x in _assetscar)) || (!(_x in _assetsair)) || (!(_x in _assetsboat)))then {
-					zbe_cached_vehs = zbe_cached_vehs - [_x];
-				};
+			if (!(_x in _assetscar)) then {
+			zbe_cached_cars = zbe_cached_cars - [_x];
+			};
+			if (!(_x in _assetsair)) then {
+			zbe_cached_air = zbe_cached_air - [_x];
+			};
+			if (!(_x in _assetsboat)) then {
+			zbe_cached_boat = zbe_cached_boat - [_x];
+			};
 		} forEach zbe_cached_vehs;
 		zbe_allVehicles = count vehicles;
 		sleep 15;

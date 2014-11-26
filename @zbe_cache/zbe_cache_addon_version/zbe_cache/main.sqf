@@ -54,37 +54,45 @@ case "altis": {
 // Vehicle Caching Beta (for client FPS)
 [] spawn {
 	private ["_assetscar", "_assetsair", "_assetsboat"];
-	zbe_cached_vehs = [];
+	zbe_cached_cars = [];
+	zbe_cached_air = [];
+	zbe_cached_boat = [];
 	while {true} do {
 		_assetscar = zbe_centerPOS nearEntities ["LandVehicle", 25000];
 		{
-			if !(_x in zbe_cached_vehs) then {
-				zbe_cached_vehs = zbe_cached_vehs + [_x];
+			if !(_x in zbe_cached_cars) then {
+				zbe_cached_cars = zbe_cached_cars + [_x];
 				if (isServer) then { [_x, zbe_vehicleCacheDistCar] execFSM "\zbe_cache_addon_version\zbe_cache\zbe_vehicleCaching.fsm";
 					};
 			};
 		} forEach _assetscar;
 		_assetsair = zbe_centerPOS nearEntities ["Air", 25000];
 		{
-			if !(_x in zbe_cached_vehs) then {
-				zbe_cached_vehs = zbe_cached_vehs + [_x];
+			if !(_x in zbe_cached_air) then {
+				zbe_cached_air = zbe_cached_air + [_x];
 				if (isServer) then { [_x, zbe_vehicleCacheDistAir] execFSM "\zbe_cache_addon_version\zbe_cache\zbe_vehicleCaching.fsm";
 					};
 			};
 		} forEach _assetsair;
 		_assetsboat = zbe_centerPOS nearEntities ["Ship", 25000];
 		{
-			if !(_x in zbe_cached_vehs) then {
-				zbe_cached_vehs = zbe_cached_vehs + [_x];
+			if !(_x in zbe_cached_boat) then {
+				zbe_cached_boat = zbe_cached_boat + [_x];
 				if (isServer) then { [_x, zbe_vehicleCacheDistBoat] execFSM "\zbe_cache_addon_version\zbe_cache\zbe_vehicleCaching.fsm";
 					};
 			};
 		} forEach _assetsboat;
 
 		{
-			if ((!(_x in _assetscar)) || (!(_x in _assetsair)) || (!(_x in _assetsboat)))then {
-					zbe_cached_vehs = zbe_cached_vehs - [_x];
-				};
+			if (!(_x in _assetscar)) then {
+			zbe_cached_cars = zbe_cached_cars - [_x];
+			};
+			if (!(_x in _assetsair)) then {
+			zbe_cached_air = zbe_cached_air - [_x];
+			};
+			if (!(_x in _assetsboat)) then {
+			zbe_cached_boat = zbe_cached_boat - [_x];
+			};
 		} forEach zbe_cached_vehs;
 		zbe_allVehicles = count vehicles;
 		sleep 15;
