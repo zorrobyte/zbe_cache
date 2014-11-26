@@ -92,7 +92,7 @@ Example for unit init from editor: (group this) setVariable ["zbe_cacheDisabled"
 Broken down: *groupName* setVariable ["zbe_cacheDisabled",*true/false*]
 
 Minimum FPS limiter:
-Prevents AI from uncaching if FPS is below desired FPS. This can break missions so if you have issues, set it to 0. In dedicated enviorments, I'd think the server staying below 15FPS may be a mission breaker anyway but up to you. Will uncache AI if/when FPS goes above setting.
+Prevents AI from uncaching if FPS is below desired FPS. This can break missions so if you have issues, set it to 0. In dedicated enviorments, I'd think the server staying below 15FPS may be a mission breaker anyway but up to you. Will uncache AI if/when FPS goes above setting if conditions meet to uncache.
 
 Extras:
-zbe_clientObjectDrawAuto.fsm is an experimental FSM to auto set client objectDrawDistance based on FPS and no higher than aiCachingRange so players will never see AI uncache. Please vote here if you would like this feature: http://feedback.arma3.com/view.php?id=21746
+zbe_clientObjectDrawAuto.fsm is an experimental FSM to auto set client objectDrawDistance based on FPS and no higher than aiCachingRange so players will never see AI uncache. Please vote here if you would like this feature in a stable release: http://feedback.arma3.com/view.php?id=21746
