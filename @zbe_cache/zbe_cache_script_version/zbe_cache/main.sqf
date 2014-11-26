@@ -78,7 +78,7 @@ case "altis": {
 		} forEach _assetsboat;
 
 		{
-			if (!(_x in _assetscar)) || (!(_x in _assetsair)) || (!(_x in _assetsboat))then {
+			if ((!(_x in _assetscar)) || (!(_x in _assetsair)) || (!(_x in _assetsboat)))then {
 					zbe_cached_vehs = zbe_cached_vehs - [_x];
 				};
 		} forEach zbe_cached_vehs;
