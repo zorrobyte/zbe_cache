@@ -26,7 +26,8 @@ zbe_deleteunitsnotleader = {
 };
 
 zbe_mapsize = [] call bis_fnc_mapSize;
-zbe_centerPOS = [zbe_mapsize / 2, zbe_mapsize / 2, 0];
+zbe_mapside = zbe_mapsize / 2;
+zbe_centerPOS = [zbe_mapside, zbe_mapside, 0];
 
 [] spawn  {
 	while {true} do {
