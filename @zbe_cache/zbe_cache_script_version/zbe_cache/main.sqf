@@ -25,14 +25,8 @@ zbe_deleteunitsnotleader = {
 	} forEach allGroups;
 };
 
-switch toLower(worldName) do {
-case "altis": {
-	zbe_centerPOS = [15101.8, 16846.1, 0.00143814];
-};
-	default {
-		zbe_centerPOS = getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition");
-	};
-};
+zbe_mapsize = [] call bis_fnc_mapSize;
+zbe_centerPOS = [zbe_mapsize / 2, zbe_mapsize / 2, 0];
 
 [] spawn  {
 	while {true} do {
