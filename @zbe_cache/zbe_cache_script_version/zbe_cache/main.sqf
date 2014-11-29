@@ -52,7 +52,7 @@ zbe_centerPOS = [zbe_mapside, zbe_mapside, 0];
 	zbe_cached_air = [];
 	zbe_cached_boat = [];
 	while {true} do {
-		_assetscar = zbe_centerPOS nearEntities ["LandVehicle", 25000];
+		_assetscar = zbe_centerPOS nearEntities ["LandVehicle", zbe_mapside];
 		{
 			if !(_x in zbe_cached_cars) then {
 				zbe_cached_cars = zbe_cached_cars + [_x];
@@ -60,7 +60,7 @@ zbe_centerPOS = [zbe_mapside, zbe_mapside, 0];
 					};
 			};
 		} forEach _assetscar;
-		_assetsair = zbe_centerPOS nearEntities ["Air", 25000];
+		_assetsair = zbe_centerPOS nearEntities ["Air", zbe_mapside];
 		{
 			if !(_x in zbe_cached_air) then {
 				zbe_cached_air = zbe_cached_air + [_x];
@@ -68,7 +68,7 @@ zbe_centerPOS = [zbe_mapside, zbe_mapside, 0];
 					};
 			};
 		} forEach _assetsair;
-		_assetsboat = zbe_centerPOS nearEntities ["Ship", 25000];
+		_assetsboat = zbe_centerPOS nearEntities ["Ship", zbe_mapside];
 		{
 			if !(_x in zbe_cached_boat) then {
 				zbe_cached_boat = zbe_cached_boat + [_x];
