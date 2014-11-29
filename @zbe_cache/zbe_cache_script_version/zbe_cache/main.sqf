@@ -97,7 +97,7 @@ case "altis": {
 			zbe_cached_boat = zbe_cached_boat - [_x];
 			};
 		} forEach zbe_cached_boat;
-		zbe_allVehicles = count vehicles;
+		zbe_allVehicles = count (_assetscar + _assetsair + _assetsboat);
 		sleep 15;
 	};
 };
