@@ -1,4 +1,3 @@
-if (!isServer) exitwith {};
 zbe_aiCacheDist		 = _this select 0;
 zbe_minFrameRate	 = _this select 1;
 zbe_debug		 = _this select 2;
@@ -43,8 +42,7 @@ zbe_centerPOS = [zbe_mapside, zbe_mapside, 0];
 				};
 			if (!_disable && !(_x in zbe_cachedGroups)) then {
 					zbe_cachedGroups = zbe_cachedGroups + [_x];
-					if (isServer) then { [zbe_aiCacheDist, _x, zbe_minFrameRate, zbe_debug] execFSM "zbe_cache\zbe_aiCaching.fsm";
-						};
+				 [zbe_aiCacheDist, _x, zbe_minFrameRate, zbe_debug] execFSM "zbe_cache\zbe_aiCaching.fsm";
 				};
 		} forEach allGroups;
 	};
@@ -60,24 +58,21 @@ zbe_centerPOS = [zbe_mapside, zbe_mapside, 0];
 		{
 			if !(_x in zbe_cached_cars) then {
 				zbe_cached_cars = zbe_cached_cars + [_x];
-				if (isServer) then { [_x, zbe_vehicleCacheDistCar] execFSM "zbe_cache\zbe_vehicleCaching.fsm";
-					};
+					[_x, zbe_vehicleCacheDistCar] execFSM "zbe_cache\zbe_vehicleCaching.fsm";
 			};
 		} forEach _assetscar;
 		_assetsair = zbe_centerPOS nearEntities ["Air", zbe_mapside];
 		{
 			if !(_x in zbe_cached_air) then {
 				zbe_cached_air = zbe_cached_air + [_x];
-				if (isServer) then { [_x, zbe_vehicleCacheDistAir] execFSM "zbe_cache\zbe_vehicleCaching.fsm";
-					};
+				    [_x, zbe_vehicleCacheDistAir] execFSM "zbe_cache\zbe_vehicleCaching.fsm";
 			};
 		} forEach _assetsair;
 		_assetsboat = zbe_centerPOS nearEntities ["Ship", zbe_mapside];
 		{
 			if !(_x in zbe_cached_boat) then {
 				zbe_cached_boat = zbe_cached_boat + [_x];
-				if (isServer) then { [_x, zbe_vehicleCacheDistBoat] execFSM "zbe_cache\zbe_vehicleCaching.fsm";
-					};
+					[_x, zbe_vehicleCacheDistBoat] execFSM "zbe_cache\zbe_vehicleCaching.fsm";
 			};
 		} forEach _assetsboat;
 
