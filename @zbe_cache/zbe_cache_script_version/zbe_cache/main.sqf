@@ -13,8 +13,7 @@ zbe_cachedVehicles = 0;
 zbe_objectView	   = 0;
 
 if (zbe_minFrameRate == -1) then {
-if (isDedicated) then {zbe_minFrameRate = 16} else {zbe_minFrameRate = 31};
-}else{zbe_minFrameRate = zbe_minFrameRate};
+if (isDedicated) then {zbe_minFrameRate = 16} else {zbe_minFrameRate = 31};};
 
 zbe_deleteunitsnotleaderfnc = {
 	{
