@@ -13,6 +13,10 @@ zbe_allVehicles	   = 0;
 zbe_cachedVehicles = 0;
 zbe_objectView	   = 0;
 
+if (zbe_minFrameRate == -1) then {
+if (isDedicated) then {zbe_minFrameRate = 16} else {zbe_minFrameRate = 31};
+}else{zbe_minFrameRate = zbe_minFrameRate};
+
 zbe_deleteunitsnotleaderfnc = {
 	{
 		deleteVehicle _x;
@@ -80,14 +84,14 @@ zbe_centerPOS = [zbe_mapside, zbe_mapside, 0];
 		{
 			if (!(_x in _assetscar)) then {
 			zbe_cached_cars = zbe_cached_cars - [_x];
-			};	
-		} forEach zbe_cached_cars;	
+			};
+		} forEach zbe_cached_cars;
 		{
 			if (!(_x in _assetsair)) then {
 			zbe_cached_air = zbe_cached_air - [_x];
 			};
-		} forEach zbe_cached_air;	
-		{	
+		} forEach zbe_cached_air;
+		{
 			if (!(_x in _assetsboat)) then {
 			zbe_cached_boat = zbe_cached_boat - [_x];
 			};
