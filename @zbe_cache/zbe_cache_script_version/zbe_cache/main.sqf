@@ -99,6 +99,8 @@ zbe_centerPOS = [zbe_mapside, zbe_mapside, 0];
 	if (zbe_debug) then {
 			while {true} do {
 				uiSleep 15;
+				zbe_cachedVehicles = {simulationEnabled _x} count zbe_allVehicles;
+				zbe_cachedUnits = {simulationEnabled _x} count allUnits;
 				hintSilent parseText format ["
                 <t color='#FFFFFF' size='1.5'>ZBE Caching</t><br/>
                 <t color='#FFFFFF'>Debug data</t><br/><br/>
