@@ -25,14 +25,9 @@ zbe_deleteunitsnotleader = {
 	} forEach allGroups;
 };
 
-switch toLower(worldName) do {
-case "altis": {
-	zbe_centerPOS = [15101.8, 16846.1, 0.00143814];
-};
-	default {
-		zbe_centerPOS = getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition");
-	};
-};
+zbe_mapsize = [] call bis_fnc_mapSize;
+zbe_mapside = zbe_mapsize / 2;
+zbe_centerPOS = [zbe_mapside, zbe_mapside, 0];
 
 [] spawn  {
 	while {true} do {
@@ -50,7 +45,6 @@ case "altis": {
 		} forEach allGroups;
 	};
 };
-
 // Vehicle Caching Beta (for client FPS)
 [] spawn {
 	private ["_assetscar", "_assetsair", "_assetsboat"];
@@ -58,7 +52,7 @@ case "altis": {
 	zbe_cached_air = [];
 	zbe_cached_boat = [];
 	while {true} do {
-		_assetscar = zbe_centerPOS nearEntities ["LandVehicle", 25000];
+		_assetscar = zbe_centerPOS nearEntities ["LandVehicle", zbe_mapside];
 		{
 			if !(_x in zbe_cached_cars) then {
 				zbe_cached_cars = zbe_cached_cars + [_x];
@@ -66,7 +60,7 @@ case "altis": {
 					};
 			};
 		} forEach _assetscar;
-		_assetsair = zbe_centerPOS nearEntities ["Air", 25000];
+		_assetsair = zbe_centerPOS nearEntities ["Air", zbe_mapside];
 		{
 			if !(_x in zbe_cached_air) then {
 				zbe_cached_air = zbe_cached_air + [_x];
@@ -74,7 +68,7 @@ case "altis": {
 					};
 			};
 		} forEach _assetsair;
-		_assetsboat = zbe_centerPOS nearEntities ["Ship", 25000];
+		_assetsboat = zbe_centerPOS nearEntities ["Ship", zbe_mapside];
 		{
 			if !(_x in zbe_cached_boat) then {
 				zbe_cached_boat = zbe_cached_boat + [_x];
@@ -98,7 +92,7 @@ case "altis": {
 			zbe_cached_boat = zbe_cached_boat - [_x];
 			};
 		} forEach zbe_cached_boat;
-		zbe_allVehicles = count vehicles;
+		zbe_allVehicles = count (_assetscar + _assetsair + _assetsboat);
 		sleep 15;
 	};
 };
