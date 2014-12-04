@@ -22,7 +22,7 @@ zbe_centerPOS = [zbe_mapside, zbe_mapside, 0];
 
 [] spawn  {
 	while {true} do {
-		sleep 5;
+		sleep 15;
 		{
 			_disable = _x getVariable "zbe_cacheDisabled";
 			_disable = if (isNil "_disable") then { false;
