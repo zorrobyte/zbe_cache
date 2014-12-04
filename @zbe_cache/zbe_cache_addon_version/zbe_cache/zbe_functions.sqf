@@ -52,7 +52,7 @@ zbe_setPosLight = {
 	if !(isNil "_testpos") then {
 		if !(isPlayer _x) then {
 				if (vehicle _x == _x) then {
-					_x setPos _leader;
+					_x setPos (formationPosition _x);
 				};
 			};
 		};
