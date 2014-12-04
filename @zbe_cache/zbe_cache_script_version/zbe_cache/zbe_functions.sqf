@@ -48,16 +48,20 @@ zbe_closestUnit = {
 };Old function that is no longer used, left here for reference*/
 
 zbe_setPosLight = {
-	{if !(isPlayer _x) then {
-			if (vehicle _x == _x) then {
-				_x setPos _leader;
+	{_testpos = (formationPosition _x);
+	if !(isNil "_testpos") then {
+		if !(isPlayer _x) then {
+				if (vehicle _x == _x) then {
+					_x setPos _leader;
+				};
 			};
 		};
 	} forEach _toCache;
 };
 
 zbe_setPosFull = {
-	{
+	{_testpos = (formationPosition _x);
+	if !(isNil "_testpos") then {
 		if !(isPlayer _x) then {
 			if (vehicle _x == _x) then {
 				_x setPos (formationPosition _x);
@@ -65,6 +69,7 @@ zbe_setPosFull = {
 				[_x]spawn {sleep 3;(_this select 0) allowDamage true;};
 			};
 		};
+	};
 	} forEach _toCache;
 };
 
