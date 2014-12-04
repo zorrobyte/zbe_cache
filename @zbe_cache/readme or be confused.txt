@@ -30,8 +30,7 @@ Option to prevent AI from uncaching if FPS lower then set
 Useful RPT/hintSilent debug option
 
 Requirements:
-Addon version requires CBA
-Script version has no requirements
+None. Use the script version to distribute in your missions or use the addon version only on the server.
 
 Changelog:
 v4.4c
