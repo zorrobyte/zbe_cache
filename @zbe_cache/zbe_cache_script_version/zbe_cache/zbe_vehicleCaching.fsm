@@ -1,4 +1,4 @@
-/*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, ZBE_VehicleCaching">*/
+/*%FSM<COMPILE "scriptedFSM.cfg, ZBE_VehicleCaching">*/
 /*%FSM<HEAD>*/
 /*
 item0[] = {"init",0,4346,150.952545,-124.118782,285.369690,-74.118797,0.000000,"init"};
@@ -34,7 +34,7 @@ link14[] = {12,4};
 link15[] = {13,14};
 link16[] = {14,6};
 globals[] = {0.000000,0,0,0,0,640,480,3,24,6316128,1,-525.019470,515.356506,433.758392,-224.394806,1126,613,1};
-window[] = {0,-1,-1,-1,-1,863,104,1670,104,1,1144};
+window[] = {0,-1,-1,-1,-1,941,182,1748,182,1,1144};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -47,17 +47,7 @@ class FSM
       name = "init";
       init = /*%FSM<STATEINIT""">*/"private[""_vehicle"",""_zbe_dist"",""_t""];" \n
        "_vehicle = _this select 0;" \n
-       "_zbe_dist = _this select 1;" \n
-       "" \n
-       "zbe_vehicleCache = {" \n
-       "_vehicle enablesimulationglobal false;" \n
-       "_zbe_state = ""CACHED"";" \n
-       "};" \n
-       "" \n
-       "zbe_vehicleUncache = {" \n
-       "_vehicle enablesimulationglobal true;" \n
-       "_zbe_state = ""UNCACHED"";" \n
-       "};"/*%FSM</STATEINIT""">*/;
+       "_zbe_dist = _this select 1;"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
@@ -224,7 +214,7 @@ class FSM
   initState="init";
   finalStates[] =
   {
-    "End",
+    "End"
   };
 };
 /*%FSM</COMPILE>*/

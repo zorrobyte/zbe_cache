@@ -12,19 +12,9 @@ zbe_allVehicles	   			= 0;
 zbe_cachedVehicles 			= 0;
 zbe_objectView	   			= 0;
 
+call compileFinal preprocessFileLineNumbers "zbe_cache\zbe_functions.sqf";
+
 if (zbe_minFrameRate == -1) then {if (isDedicated) then {zbe_minFrameRate = 16} else {zbe_minFrameRate = 31};};
-
-zbe_deleteunitsnotleaderfnc = {
-	{
-		deleteVehicle _x;
-	} forEach units _this - [leader _this];
-};
-
-zbe_deleteunitsnotleader = {
-	{
-		_x call zbe_deleteunitsnotleaderfnc;
-	} forEach allGroups;
-};
 
 zbe_mapsize = [] call bis_fnc_mapSize;
 zbe_mapside = zbe_mapsize / 2;

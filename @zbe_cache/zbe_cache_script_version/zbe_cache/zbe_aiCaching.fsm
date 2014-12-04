@@ -1,4 +1,4 @@
-/*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, zbe_aiCaching">*/
+/*%FSM<COMPILE "scriptedFSM.cfg, zbe_aiCaching">*/
 /*%FSM<HEAD>*/
 /*
 item0[] = {"init",0,4346,-193.483002,-91.140106,-103.483002,-41.140106,0.000000,"init"};
@@ -55,8 +55,8 @@ link28[] = {17,9};
 link29[] = {18,19};
 link30[] = {20,9};
 link31[] = {21,9};
-globals[] = {0.000000,0,0,0,0,640,480,1,39,6316128,1,-719.063477,448.654388,588.765320,-133.017349,1071,662,1};
-window[] = {0,-1,-1,-1,-1,1042,234,1905,234,1,1089};
+globals[] = {0.000000,0,0,0,0,640,480,1,39,6316128,1,-777.449402,507.040253,624.854431,-169.106476,1071,662,1};
+window[] = {0,-1,-1,-1,-1,860,52,1723,52,1,1089};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -73,97 +73,7 @@ class FSM
        "_group = _this select 1;" \n
        "_fps = _this select 2;" \n
        "_debug = _this select 3;" \n
-       "_leader = leader _group;" \n
-       "" \n
-       "zbe_cache = {" \n
-       "_toCache = (units _group) - [(_leader)];" \n
-       "{" \n
-       "if (!(isPlayer _x) && {!(""driver"" in assignedVehicleRole _x)}) then {" \n
-       "_x enablesimulationglobal false;" \n
-       "_x hideobjectglobal true;" \n
-       "};" \n
-       "} forEach _toCache;" \n
-       "};" \n
-       "" \n
-       "zbe_unCache = {" \n
-       "{" \n
-       "if (!(isPlayer _x) && {!(""driver"" in assignedVehicleRole _x)}) then {" \n
-       "_x enablesimulationglobal true;" \n
-       "_x hideobjectglobal false;" \n
-       "};" \n
-       "} forEach _toCache;" \n
-       "};" \n
-       "" \n
-       "zbe_closestUnit = {" \n
-       "        " \n
-       "        private[""_units"", ""_unit"", ""_dist"", ""_udist""];" \n
-       "        _units = _this select 0;" \n
-       "        _unit = _this select 1;" \n
-       "        _dist = 10^5;" \n
-       "        " \n
-       "        {" \n
-       "                _udist = _x distance _unit;" \n
-       "                if (_udist < _dist) then {_dist = _udist;};" \n
-       "        } forEach _units;" \n
-       "        _dist;" \n
-       "};" \n
-       "" \n
-       "zbe_triggerUnits = {" \n
-       "        " \n
-       "        private [""_zbe_leader"",""_trigUnits""];" \n
-       "        _zbe_leader = _this select 0;" \n
-       "        _trigUnits = [];" \n
-       "        {" \n
-       "                if ((((side _x) getFriend (side _zbe_leader)) <= 0.6)) then {" \n
-       "                        _trigUnits set [count _trigUnits, leader _x];" \n
-       "                };" \n
-       "        } forEach allGroups;" \n
-       "        _trigUnits = _trigUnits + ([] call BIS_fnc_listPlayers);" \n
-       "        _trigUnits;" \n
-       "};" \n
-       "" \n
-       "zbe_setPosLight = {" \n
-       "{" \n
-       "if !(isPlayer _x) then {" \n
-       "		if (vehicle _x == _x) then {" \n
-       "	                _x setPos (formationPosition _x);" \n
-       "		};" \n
-       "};" \n
-       "} forEach _toCache;" \n
-       "};" \n
-       "" \n
-       "zbe_setPosFull = {" \n
-       "{" \n
-       "if !(isPlayer _x) then {" \n
-       "		if (vehicle _x == _x) then {" \n
-       "	                _x setPos (formationPosition _x);" \n
-       "                      _x allowDamage false;" \n
-       "                     [_x]spawn {sleep 3;(_this select 0) allowDamage true;};" \n
-       "		};" \n
-       "};" \n
-       "} forEach _toCache;" \n
-       "};" \n
-       "" \n
-       "zbe_removeDead = {" \n
-       "{" \n
-       "if !(alive _x) then {" \n
-       "_x enablesimulation true;" \n
-       "_x hideobject false;" \n
-       "if (zbe_debug) then {" \n
-       "diag_log format [""ZBE_Cache %1 died while cached from group %2, uncaching and removing from cache loop"",_x,_group];" \n
-       "};" \n
-       "_toCache = _toCache - [_x];" \n
-       "};" \n
-       "} forEach _toCache;" \n
-       "};" \n
-       "" \n
-       "zbe_cacheEvent = {" \n
-       "_position = (getPosASL _leader);" \n
-       "({_x distance _position < _distance} count (switchableUnits + playableUnits) > 0) || !isNull (_leader findNearestEnemy _leader)" \n
-       "};" \n
-       "" \n
-       "" \n
-       ""/*%FSM</STATEINIT""">*/;
+       "_leader = leader _group;"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
@@ -450,8 +360,7 @@ class FSM
   initState="init";
   finalStates[] =
   {
-    "end",
-    "exitIsPlayer",
+    "end"    ,"exitIsPlayer"
   };
 };
 /*%FSM</COMPILE>*/
