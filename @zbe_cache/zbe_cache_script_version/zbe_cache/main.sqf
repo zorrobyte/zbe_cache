@@ -1,19 +1,18 @@
-zbe_aiCacheDist		 = _this select 0;
-zbe_minFrameRate	 = _this select 1;
-zbe_debug		 = _this select 2;
-zbe_vehicleCacheDistCar	 = _this select 3;
-zbe_vehicleCacheDistAir	 = _this select 4;
-zbe_vehicleCacheDistBoat = _this select 5;
+zbe_aiCacheDist				= _this select 0;
+zbe_minFrameRate			= _this select 1;
+zbe_debug					= _this select 2;
+zbe_vehicleCacheDistCar		= _this select 3;
+zbe_vehicleCacheDistAir		= _this select 4;
+zbe_vehicleCacheDistBoat	= _this select 5;
 
-zbe_allGroups	   = 0;
-zbe_cachedGroups   = [];
-zbe_cachedUnits	   = 0;
-zbe_allVehicles	   = 0;
-zbe_cachedVehicles = 0;
-zbe_objectView	   = 0;
+zbe_allGroups	   			= 0;
+zbe_cachedGroups   			= [];
+zbe_cachedUnits	   			= 0;
+zbe_allVehicles	   			= 0;
+zbe_cachedVehicles 			= 0;
+zbe_objectView	   			= 0;
 
-if (zbe_minFrameRate == -1) then {
-if (isDedicated) then {zbe_minFrameRate = 16} else {zbe_minFrameRate = 31};};
+if (zbe_minFrameRate == -1) then {if (isDedicated) then {zbe_minFrameRate = 16} else {zbe_minFrameRate = 31};};
 
 zbe_deleteunitsnotleaderfnc = {
 	{
