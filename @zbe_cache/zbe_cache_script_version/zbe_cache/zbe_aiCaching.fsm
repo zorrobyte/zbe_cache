@@ -1,7 +1,7 @@
 /*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, zbe_aiCaching">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"init",0,250,-193.483002,-91.140106,-103.483002,-41.140106,0.000000,"init"};
+item0[] = {"init",0,4346,-193.483002,-91.140106,-103.483002,-41.140106,0.000000,"init"};
 item1[] = {"ready_",4,218,-191.749756,-19.800257,-101.749763,30.199743,0.000000,"ready?"};
 item2[] = {"begin",2,250,-195.216248,65.128845,-105.216232,115.128853,0.000000,"begin"};
 item3[] = {"cache_for_AI_",4,218,-306.548492,126.416489,-216.548492,176.416489,1.000000,"cache" \n "for AI?"};
@@ -11,12 +11,12 @@ item6[] = {"unCache",2,250,-193.956955,218.653885,-103.956940,268.653931,0.00000
 item7[] = {"reSync_leader",4,218,-259.751007,291.135986,-150.551178,348.335876,2.000000,"reSync leader"};
 item8[] = {"allDead_",4,218,-396.858551,304.806641,-306.858551,354.806641,3.000000,"allDead?"};
 item9[] = {"end",1,250,-519.399902,383.839478,-429.399597,433.839447,0.000000,"end"};
-item10[] = {"delay",4,218,-453.643311,137.457932,-363.643311,187.457932,0.000000,"delay"};
+item10[] = {"delay",8,218,-453.643311,137.457932,-363.643311,187.457932,0.000000,"delay"};
 item11[] = {"delayed",2,250,-496.324066,202.799103,-406.323944,252.799118,0.000000,"delayed"};
 item12[] = {"done_delay__and",4,218,-484.096313,272.248962,-394.096191,322.248962,0.000000,"done delay?" \n "and setPos"};
-item13[] = {"delay",4,218,-60.272964,138.074768,29.727036,188.074768,0.000000,"delay"};
+item13[] = {"delay",8,218,-60.272964,138.074768,29.727036,188.074768,0.000000,"delay"};
 item14[] = {"delayed_1",2,250,-34.876671,226.961761,55.123352,276.961761,0.000000,"delayed"};
-item15[] = {"done_delay_",4,4314,-71.912933,312.674255,18.087072,362.674255,0.000000,"done delay?"};
+item15[] = {"done_delay_",4,218,-71.912933,312.674255,18.087072,362.674255,0.000000,"done delay?"};
 item16[] = {"unit_died_",4,218,-396.614685,84.259239,-306.614685,134.259216,1.000000,"unit died?"};
 item17[] = {"disabled_",4,218,-363.643097,367.045807,-273.643097,417.045837,3.000000,"disabled?"};
 item18[] = {"if_player_is_leader",4,218,-158.950836,-149.471191,-43.840740,-96.007736,1.000000,"if player is" \n "leader then" \n " exit"};
@@ -56,7 +56,7 @@ link29[] = {18,19};
 link30[] = {20,9};
 link31[] = {21,9};
 globals[] = {0.000000,0,0,0,0,640,480,1,39,6316128,1,-719.063477,448.654388,588.765320,-133.017349,1071,662,1};
-window[] = {0,-1,-1,-1,-1,938,130,1801,130,1,1089};
+window[] = {0,-1,-1,-1,-1,1042,234,1905,234,1,1089};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -81,7 +81,6 @@ class FSM
        "if (!(isPlayer _x) && {!(""driver"" in assignedVehicleRole _x)}) then {" \n
        "_x enablesimulationglobal false;" \n
        "_x hideobjectglobal true;" \n
-       "zbe_cachedUnits = zbe_cachedUnits + 1;" \n
        "};" \n
        "} forEach _toCache;" \n
        "};" \n
@@ -91,7 +90,6 @@ class FSM
        "if (!(isPlayer _x) && {!(""driver"" in assignedVehicleRole _x)}) then {" \n
        "_x enablesimulationglobal true;" \n
        "_x hideobjectglobal false;" \n
-       "zbe_cachedUnits = zbe_cachedUnits - 1;" \n
        "};" \n
        "} forEach _toCache;" \n
        "};" \n
@@ -155,7 +153,6 @@ class FSM
        "diag_log format [""ZBE_Cache %1 died while cached from group %2, uncaching and removing from cache loop"",_x,_group];" \n
        "};" \n
        "_toCache = _toCache - [_x];" \n
-       "zbe_cachedUnits = zbe_cachedUnits - 1;" \n
        "};" \n
        "} forEach _toCache;" \n
        "};" \n
@@ -309,7 +306,7 @@ class FSM
           priority = 0.000000;
           to="delayed";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"(true)"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -370,7 +367,7 @@ class FSM
           priority = 0.000000;
           to="delayed_1";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"(true)"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
