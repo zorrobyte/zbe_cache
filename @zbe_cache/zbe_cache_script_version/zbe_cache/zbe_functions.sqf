@@ -80,8 +80,7 @@ zbe_removeDead = {
 };
 
 zbe_cacheEvent = {
-	_position = (getPosASL _leader);
-	({_x distance _position < _distance} count (switchableUnits + playableUnits) > 0) || !isNull (_leader findNearestEnemy _leader)
+	({_x distance _leader < _distance} count (switchableUnits + playableUnits) > 0) || !isNull (_leader findNearestEnemy _leader)
 };
 
 zbe_vehicleCache = {
