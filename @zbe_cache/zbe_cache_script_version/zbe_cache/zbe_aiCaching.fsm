@@ -1,7 +1,7 @@
 /*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, zbe_aiCaching">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"init",0,4346,-193.483002,-91.140106,-103.483002,-41.140106,0.000000,"init"};
+item0[] = {"init",0,250,-193.483002,-91.140106,-103.483002,-41.140106,0.000000,"init"};
 item1[] = {"ready_",4,218,-191.749756,-19.800257,-101.749763,30.199743,0.000000,"ready?"};
 item2[] = {"begin",2,250,-195.216248,65.128845,-105.216232,115.128853,0.000000,"begin"};
 item3[] = {"cache_for_AI_",4,218,-306.548492,126.416489,-216.548492,176.416489,1.000000,"cache" \n "for AI?"};
@@ -11,21 +11,15 @@ item6[] = {"unCache",2,250,-193.956955,218.653885,-103.956940,268.653931,0.00000
 item7[] = {"reSync_leader",4,218,-259.751007,291.135986,-150.551178,348.335876,2.000000,"reSync leader"};
 item8[] = {"allDead_",4,218,-396.858551,304.806641,-306.858551,354.806641,3.000000,"allDead?"};
 item9[] = {"end",1,250,-519.399902,383.839478,-429.399597,433.839447,0.000000,"end"};
-item10[] = {"delay",8,218,-453.643311,137.457932,-363.643311,187.457932,0.000000,"delay"};
-item11[] = {"delayed",2,250,-496.324066,202.799103,-406.323944,252.799118,0.000000,"delayed"};
-item12[] = {"done_delay__and",4,218,-484.096313,272.248962,-394.096191,322.248962,0.000000,"done delay?" \n "and setPos"};
-item13[] = {"delay",8,218,-60.272964,138.074768,29.727036,188.074768,0.000000,"delay"};
-item14[] = {"delayed_1",2,250,-34.876671,226.961761,55.123352,276.961761,0.000000,"delayed"};
-item15[] = {"done_delay_",4,218,-71.912933,312.674255,18.087072,362.674255,0.000000,"done delay?"};
-item16[] = {"unit_died_",4,218,-396.614685,84.259239,-306.614685,134.259216,1.000000,"unit died?"};
-item17[] = {"disabled_",4,218,-363.643097,367.045807,-273.643097,417.045837,3.000000,"disabled?"};
-item18[] = {"if_player_is_leader",4,218,-158.950836,-149.471191,-43.840740,-96.007736,1.000000,"if player is" \n "leader then" \n " exit"};
-item19[] = {"exitIsPlayer",1,250,-49.279797,-188.350754,40.720234,-138.350769,0.000000,"exitIsPlayer"};
-item20[] = {"grpNull_",4,218,-646.310730,185.444565,-556.310364,235.444412,2.000000,"grpNull?"};
-item21[] = {"grpNull_",4,218,-247.258865,391.512390,-157.258331,441.512482,4.000000,"grpNull?"};
+item10[] = {"unit_died_",4,218,-396.614685,84.259239,-306.614685,134.259216,1.000000,"unit died?"};
+item11[] = {"disabled_",4,218,-363.643097,367.045807,-273.643097,417.045837,3.000000,"disabled?"};
+item12[] = {"if_player_is_leader",4,218,-158.950836,-149.471191,-43.840740,-96.007736,1.000000,"if player is" \n "leader then" \n " exit"};
+item13[] = {"exitIsPlayer",1,250,-49.279797,-188.350754,40.720234,-138.350769,0.000000,"exitIsPlayer"};
+item14[] = {"grpNull_",4,218,-646.310730,185.444565,-556.310364,235.444412,2.000000,"grpNull?"};
+item15[] = {"grpNull_",4,218,-247.258865,391.512390,-157.258331,441.512482,4.000000,"grpNull?"};
 link0[] = {0,1};
-link1[] = {0,18};
-link2[] = {0,20};
+link1[] = {0,12};
+link2[] = {0,14};
 link3[] = {1,2};
 link4[] = {2,3};
 link5[] = {3,4};
@@ -33,30 +27,22 @@ link6[] = {4,5};
 link7[] = {4,7};
 link8[] = {4,8};
 link9[] = {4,10};
-link10[] = {4,16};
-link11[] = {4,17};
-link12[] = {4,21};
-link13[] = {5,6};
-link14[] = {6,3};
-link15[] = {6,8};
-link16[] = {6,13};
-link17[] = {6,17};
-link18[] = {6,21};
-link19[] = {7,6};
-link20[] = {8,9};
-link21[] = {10,11};
-link22[] = {11,12};
-link23[] = {12,4};
-link24[] = {13,14};
-link25[] = {14,15};
-link26[] = {15,6};
-link27[] = {16,4};
-link28[] = {17,9};
-link29[] = {18,19};
-link30[] = {20,9};
-link31[] = {21,9};
+link10[] = {4,11};
+link11[] = {4,15};
+link12[] = {5,6};
+link13[] = {6,3};
+link14[] = {6,8};
+link15[] = {6,11};
+link16[] = {6,15};
+link17[] = {7,6};
+link18[] = {8,9};
+link19[] = {10,4};
+link20[] = {11,9};
+link21[] = {12,13};
+link22[] = {14,9};
+link23[] = {15,9};
 globals[] = {0.000000,0,0,0,0,640,480,1,39,6316128,1,-719.063477,448.654388,588.765320,-133.017349,1071,662,1};
-window[] = {0,-1,-1,-1,-1,1042,234,1905,234,1,1089};
+window[] = {0,-1,-1,-1,-1,860,52,1723,52,1,1089};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -300,16 +286,6 @@ class FSM
            "call zbe_setPosFull;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
-        /*%FSM<LINK "delay">*/
-        class delay
-        {
-          priority = 0.000000;
-          to="delayed";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
       };
     };
     /*%FSM</STATE>*/
@@ -331,16 +307,6 @@ class FSM
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
-        /*%FSM<LINK "allDead_">*/
-        class allDead_
-        {
-          priority = 3.000000;
-          to="end";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"({alive _x} count units _group == 0)"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"call zbe_unCache;"/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
         /*%FSM<LINK "disabled_">*/
         class disabled_
         {
@@ -351,6 +317,16 @@ class FSM
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
+        /*%FSM<LINK "allDead_">*/
+        class allDead_
+        {
+          priority = 3.000000;
+          to="end";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"({alive _x} count units _group == 0)"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"call zbe_unCache;"/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
         /*%FSM<LINK "cache_for_AI_">*/
         class cache_for_AI_
         {
@@ -359,16 +335,6 @@ class FSM
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"!(call zbe_cacheEvent);"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"call zbe_cache;"/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
-        /*%FSM<LINK "delay">*/
-        class delay
-        {
-          priority = 0.000000;
-          to="delayed_1";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -386,48 +352,6 @@ class FSM
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
-      };
-    };
-    /*%FSM</STATE>*/
-    /*%FSM<STATE "delayed">*/
-    class delayed
-    {
-      name = "delayed";
-      init = /*%FSM<STATEINIT""">*/"_t = time;"/*%FSM</STATEINIT""">*/;
-      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
-      class Links
-      {
-        /*%FSM<LINK "done_delay__and">*/
-        class done_delay__and
-        {
-          priority = 0.000000;
-          to="cache";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"(time - _t) > 1.5;"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"call zbe_setPosLight;"/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
-      };
-    };
-    /*%FSM</STATE>*/
-    /*%FSM<STATE "delayed_1">*/
-    class delayed_1
-    {
-      name = "delayed_1";
-      init = /*%FSM<STATEINIT""">*/"_t = time;"/*%FSM</STATEINIT""">*/;
-      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
-      class Links
-      {
-        /*%FSM<LINK "done_delay_">*/
-        class done_delay_
-        {
-          priority = 0.000000;
-          to="unCache";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"(time - _t) > 5;"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
       };
     };
     /*%FSM</STATE>*/
