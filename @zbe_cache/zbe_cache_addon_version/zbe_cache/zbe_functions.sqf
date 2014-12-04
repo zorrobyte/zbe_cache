@@ -35,7 +35,7 @@ zbe_closestUnit = {
 	_dist;
 };
 
-zbe_triggerUnits = {
+/* = {
 	private ["_zbe_leader","_trigUnits"];
 	_zbe_leader = _this select 0;
 	_trigUnits = [];
@@ -45,23 +45,27 @@ zbe_triggerUnits = {
         } forEach allGroups;
         _trigUnits = _trigUnits + ([] call BIS_fnc_listPlayers);
         _trigUnits;
-};
+};Old function that is no longer used, left here for reference*/
 
 zbe_setPosLight = {
-	{if !(isPlayer _x) then {
-		if (vehicle _x == _x) then {
-			_x setPos (formationPosition _x);
+	{if !(formationPosition _x isEqualTo []) then {
+		if !(isPlayer _x) then {
+			if (vehicle _x == _x) then {
+				_x setPos (formationPosition _x);
+			};
 		};
 	};
 	} forEach _toCache;
 };
 
 zbe_setPosFull = {
-	{if !(isPlayer _x) then {
-		if (vehicle _x == _x) then {
-			_x setPos (formationPosition _x);
-			_x allowDamage false;
-			[_x]spawn {sleep 3;(_this select 0) allowDamage true;};
+	{!(formationPosition _x isEqualTo []) then {
+		if !(isPlayer _x) then {
+			if (vehicle _x == _x) then {
+				_x setPos (formationPosition _x);
+				_x allowDamage false;
+				[_x]spawn {sleep 3;(_this select 0) allowDamage true;};
+			};
 		};
 	};
 	} forEach _toCache;
@@ -85,10 +89,8 @@ zbe_cacheEvent = {
 
 zbe_vehicleCache = {
 	_vehicle enablesimulationglobal false;
-	_zbe_state = "CACHED";
 };
 
 zbe_vehicleUncache = {
 	_vehicle enablesimulationglobal true;
-	_zbe_state = "UNCACHED";
 };
