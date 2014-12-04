@@ -79,7 +79,7 @@ zbe_centerPOS = [zbe_mapside, zbe_mapside, 0];
 			zbe_cached_boat = zbe_cached_boat - [_x];
 			};
 		} forEach zbe_cached_boat;
-		zbe_allVehicles = count (_assetscar + _assetsair + _assetsboat);
+		zbe_allVehicles = (_assetscar + _assetsair + _assetsboat);
 		sleep 15;
 	};
 };
@@ -88,6 +88,9 @@ zbe_centerPOS = [zbe_mapside, zbe_mapside, 0];
 	if (zbe_debug) then {
 			while {true} do {
 				uiSleep 15;
+				zbe_cachedUnits = (count allUnits - ({simulationEnabled _x} count allUnits));
+				zbe_cachedVehicles = (count zbe_allVehicles - ({simulationEnabled _x} count zbe_allVehicles));
+				zbe_allVehiclesCount = (count zbe_allVehicles);
 				hintSilent parseText format ["
                 <t color='#FFFFFF' size='1.5'>ZBE Caching</t><br/>
                 <t color='#FFFFFF'>Debug data</t><br/><br/>
@@ -99,8 +102,8 @@ zbe_centerPOS = [zbe_mapside, zbe_mapside, 0];
                 <t color='#A1A4AD' align='left'>Cached vehicles:</t><t color='#39a0ff' align='right'>%6</t><br/><br/>
                 <t color='#A1A4AD' align='left'>FPS:</t><t color='#FFFFFF' align='right'>%7</t><br/><br/>
                 <t color='#A1A4AD' align='left'>Obj draw distance:</t><t color='#FFFFFF' align='right'>%8</t><br/>
-            ", (round time), count allGroups, count allUnits, zbe_cachedUnits, zbe_allVehicles, zbe_cachedVehicles, (round diag_fps), zbe_objectView];
-				zbe_log_stats = format ["Groups: %1 # All/Cached Units: %2/%3 # All/Cached Vehicles: %4/%5 # FPS: %6 # ObjectDrawDistance: %7", count allGroups, count allUnits, zbe_cachedUnits, zbe_allVehicles, zbe_cachedVehicles, (round diag_fps), zbe_objectView];
+            ", (round time), count allGroups, count allUnits, zbe_cachedUnits, zbe_allVehiclesCount, zbe_cachedVehicles, (round diag_fps), zbe_objectView];
+				zbe_log_stats = format ["Groups: %1 # All/Cached Units: %2/%3 # All/Cached Vehicles: %4/%5 # FPS: %6 # ObjectDrawDistance: %7", count allGroups, count allUnits, zbe_cachedUnits, zbe_allVehiclesCount, zbe_cachedVehicles, (round diag_fps), zbe_objectView];
 				diag_log format ["%1 ZBE_Cache (%2) ---  %3", (round time), name player, zbe_log_stats];
 			};
 		};
