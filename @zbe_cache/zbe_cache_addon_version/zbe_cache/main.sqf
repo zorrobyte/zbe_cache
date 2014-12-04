@@ -12,7 +12,7 @@ zbe_allVehicles	   			= 0;
 zbe_cachedVehicles 			= 0;
 zbe_objectView	   			= 0;
 
-call compileFinal preprocessFileLineNumbers "zbe_cache\zbe_functions.sqf";
+call compileFinal preprocessFileLineNumbers "\zbe_cache_addon_version\zbe_functions.sqf";
 
 if (zbe_minFrameRate == -1) then {if (isDedicated) then {zbe_minFrameRate = 16} else {zbe_minFrameRate = 31};};
 
