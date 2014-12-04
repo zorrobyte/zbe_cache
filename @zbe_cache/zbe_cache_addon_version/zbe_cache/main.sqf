@@ -1,32 +1,20 @@
-zbe_aiCacheDist		 = _this select 0;
-zbe_minFrameRate	 = _this select 1;
-zbe_debug		 = _this select 2;
-zbe_vehicleCacheDistCar	 = _this select 3;
-zbe_vehicleCacheDistAir	 = _this select 4;
-zbe_vehicleCacheDistBoat = _this select 5;
+zbe_aiCacheDist				= _this select 0;
+zbe_minFrameRate			= _this select 1;
+zbe_debug					= _this select 2;
+zbe_vehicleCacheDistCar		= _this select 3;
+zbe_vehicleCacheDistAir		= _this select 4;
+zbe_vehicleCacheDistBoat	= _this select 5;
 
-zbe_allGroups	   = 0;
-zbe_cachedGroups   = [];
-zbe_cachedUnits	   = 0;
-zbe_allVehicles	   = 0;
-zbe_cachedVehicles = 0;
-zbe_objectView	   = 0;
+zbe_allGroups	   			= 0;
+zbe_cachedGroups   			= [];
+zbe_cachedUnits	   			= 0;
+zbe_allVehicles	   			= 0;
+zbe_cachedVehicles 			= 0;
+zbe_objectView	   			= 0;
 
-if (zbe_minFrameRate == -1) then {
-if (isDedicated) then {zbe_minFrameRate = 16} else {zbe_minFrameRate = 31};
-}else{zbe_minFrameRate = zbe_minFrameRate};
+call compileFinal preprocessFileLineNumbers "zbe_cache\zbe_functions.sqf";
 
-zbe_deleteunitsnotleaderfnc = {
-	{
-		deleteVehicle _x;
-	} forEach units _this - [leader _this];
-};
-
-zbe_deleteunitsnotleader = {
-	{
-		_x call zbe_deleteunitsnotleaderfnc;
-	} forEach allGroups;
-};
+if (zbe_minFrameRate == -1) then {if (isDedicated) then {zbe_minFrameRate = 16} else {zbe_minFrameRate = 31};};
 
 zbe_mapsize = [] call bis_fnc_mapSize;
 zbe_mapside = zbe_mapsize / 2;
@@ -34,7 +22,7 @@ zbe_centerPOS = [zbe_mapside, zbe_mapside, 0];
 
 [] spawn  {
 	while {true} do {
-		sleep 5;
+		sleep 15;
 		{
 			_disable = _x getVariable "zbe_cacheDisabled";
 			_disable = if (isNil "_disable") then { false;
@@ -91,7 +79,7 @@ zbe_centerPOS = [zbe_mapside, zbe_mapside, 0];
 			zbe_cached_boat = zbe_cached_boat - [_x];
 			};
 		} forEach zbe_cached_boat;
-		zbe_allVehicles = count (_assetscar + _assetsair + _assetsboat);
+		zbe_allVehicles = (_assetscar + _assetsair + _assetsboat);
 		sleep 15;
 	};
 };
@@ -100,6 +88,9 @@ zbe_centerPOS = [zbe_mapside, zbe_mapside, 0];
 	if (zbe_debug) then {
 			while {true} do {
 				uiSleep 15;
+				zbe_cachedUnits = (count allUnits - ({simulationEnabled _x} count allUnits));
+				zbe_cachedVehicles = (count zbe_allVehicles - ({simulationEnabled _x} count zbe_allVehicles));
+				zbe_allVehiclesCount = (count zbe_allVehicles);
 				hintSilent parseText format ["
                 <t color='#FFFFFF' size='1.5'>ZBE Caching</t><br/>
                 <t color='#FFFFFF'>Debug data</t><br/><br/>
@@ -111,8 +102,8 @@ zbe_centerPOS = [zbe_mapside, zbe_mapside, 0];
                 <t color='#A1A4AD' align='left'>Cached vehicles:</t><t color='#39a0ff' align='right'>%6</t><br/><br/>
                 <t color='#A1A4AD' align='left'>FPS:</t><t color='#FFFFFF' align='right'>%7</t><br/><br/>
                 <t color='#A1A4AD' align='left'>Obj draw distance:</t><t color='#FFFFFF' align='right'>%8</t><br/>
-            ", (round time), count allGroups, count allUnits, zbe_cachedUnits, zbe_allVehicles, zbe_cachedVehicles, (round diag_fps), zbe_objectView];
-				zbe_log_stats = format ["Groups: %1 # All/Cached Units: %2/%3 # All/Cached Vehicles: %4/%5 # FPS: %6 # ObjectDrawDistance: %7", count allGroups, count allUnits, zbe_cachedUnits, zbe_allVehicles, zbe_cachedVehicles, (round diag_fps), zbe_objectView];
+            ", (round time), count allGroups, count allUnits, zbe_cachedUnits, zbe_allVehiclesCount, zbe_cachedVehicles, (round diag_fps), zbe_objectView];
+				zbe_log_stats = format ["Groups: %1 # All/Cached Units: %2/%3 # All/Cached Vehicles: %4/%5 # FPS: %6 # ObjectDrawDistance: %7", count allGroups, count allUnits, zbe_cachedUnits, zbe_allVehiclesCount, zbe_cachedVehicles, (round diag_fps), zbe_objectView];
 				diag_log format ["%1 ZBE_Cache (%2) ---  %3", (round time), name player, zbe_log_stats];
 			};
 		};
