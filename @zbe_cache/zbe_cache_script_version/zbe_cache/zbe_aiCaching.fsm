@@ -1,7 +1,7 @@
 /*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, zbe_aiCaching">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"init",0,4346,-193.483002,-91.140106,-103.483002,-41.140106,0.000000,"init"};
+item0[] = {"init",0,250,-193.483002,-91.140106,-103.483002,-41.140106,0.000000,"init"};
 item1[] = {"ready_",4,218,-191.749756,-19.800257,-101.749763,30.199743,0.000000,"ready?"};
 item2[] = {"begin",2,250,-195.216248,65.128845,-105.216232,115.128853,0.000000,"begin"};
 item3[] = {"cache_for_AI_",4,218,-306.548492,126.416489,-216.548492,176.416489,1.000000,"cache" \n "for AI?"};
@@ -17,7 +17,7 @@ item12[] = {"done_delay__and",4,218,-484.096313,272.248962,-394.096191,322.24896
 item13[] = {"delay",8,218,-60.272964,138.074768,29.727036,188.074768,0.000000,"delay"};
 item14[] = {"delayed_1",2,250,-34.876671,226.961761,55.123352,276.961761,0.000000,"delayed"};
 item15[] = {"done_delay_",4,218,-71.912933,312.674255,18.087072,362.674255,0.000000,"done delay?"};
-item16[] = {"unit_died_",4,218,-396.614685,84.259239,-306.614685,134.259216,1.000000,"unit died?"};
+item16[] = {"unit_died_",4,4314,-396.614685,84.259239,-306.614685,134.259216,3.000000,"unit died?"};
 item17[] = {"disabled_",4,218,-363.643097,367.045807,-273.643097,417.045837,3.000000,"disabled?"};
 item18[] = {"if_player_is_leader",4,218,-158.950836,-149.471191,-43.840740,-96.007736,1.000000,"if player is" \n "leader then" \n " exit"};
 item19[] = {"exitIsPlayer",1,250,-49.279797,-188.350754,40.720234,-138.350769,0.000000,"exitIsPlayer"};
@@ -51,7 +51,7 @@ link25[] = {17,9};
 link26[] = {18,19};
 link27[] = {20,9};
 globals[] = {0.000000,0,0,0,0,640,480,1,39,6316128,1,-738.175598,360.836456,541.471069,-137.843567,1071,662,1};
-window[] = {0,-1,-1,-1,-1,938,130,1801,130,1,1089};
+window[] = {0,-1,-1,-1,-1,886,78,1749,78,1,1089};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -139,16 +139,6 @@ class FSM
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
-        /*%FSM<LINK "allDead_">*/
-        class allDead_
-        {
-          priority = 3.000000;
-          to="end";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"({alive _x} count units _group == 0)"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"call zbe_unCache;"/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
         /*%FSM<LINK "disabled_">*/
         class disabled_
         {
@@ -159,6 +149,27 @@ class FSM
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
+        /*%FSM<LINK "allDead_">*/
+        class allDead_
+        {
+          priority = 3.000000;
+          to="end";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"({alive _x} count units _group == 0)"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"call zbe_unCache;"/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "unit_died_">*/
+        class unit_died_
+        {
+          priority = 3.000000;
+          to="cache";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(_groupCount > ({alive _x} count units _group))"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"call zbe_removeDead;" \n
+           "_groupCount = ({alive _x} count units _group);"/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
         /*%FSM<LINK "reSync_leader">*/
         class reSync_leader
         {
@@ -167,21 +178,10 @@ class FSM
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"!(alive _leader) && {!(simulationEnabled (leader _group))}"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"call zbe_unCache;" \n
-           "_state = ""UNCACHED"";" \n
+           "_leader = (leader _group);" \n
            "if (zbe_debug) then {" \n
            "diag_log format [""ZBE_Cache leader synced for %1, uncached %2"",_group,_leader];" \n
            "};"/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
-        /*%FSM<LINK "unit_died_">*/
-        class unit_died_
-        {
-          priority = 1.000000;
-          to="cache";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"(_groupCount > ({alive _x} count units _group))"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"call zbe_removeDead;" \n
-           "_groupCount = ({alive _x} count units _group);"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
         /*%FSM<LINK "unCache_for_AI_">*/
