@@ -11,6 +11,7 @@ zbe_cachedUnits	   			= 0;
 zbe_allVehicles	   			= 0;
 zbe_cachedVehicles 			= 0;
 zbe_objectView	   			= 0;
+zbe_players					= [];
 
 call compileFinal preprocessFileLineNumbers "\zbe_cache_addon_version\zbe_cache\zbe_functions.sqf";
 
@@ -23,6 +24,7 @@ zbe_centerPOS = [zbe_mapside, zbe_mapside, 0];
 [] spawn  {
 	while {true} do {
 		sleep 15;
+		zbe_players = (switchableUnits + playableUnits);
 		{
 			_disable = _x getVariable "zbe_cacheDisabled";
 			_disable = if (isNil "_disable") then { false;

@@ -90,7 +90,7 @@ zbe_removeDead = {
 };
 
 zbe_cacheEvent = {
-	({_x distance _leader < _distance} count (switchableUnits + playableUnits) > 0) || !isNull (_leader findNearestEnemy _leader)
+	({_x distance _leader < _distance} count zbe_players > 0) || !isNull (_leader findNearestEnemy _leader)
 };
 
 zbe_vehicleCache = {
