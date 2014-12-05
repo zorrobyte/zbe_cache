@@ -1,7 +1,7 @@
 /*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, zbe_aiCaching">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"init",0,250,-193.483002,-91.140106,-103.483002,-41.140106,0.000000,"init"};
+item0[] = {"init",0,4346,-193.483002,-91.140106,-103.483002,-41.140106,0.000000,"init"};
 item1[] = {"ready_",4,218,-191.749756,-19.800257,-101.749763,30.199743,0.000000,"ready?"};
 item2[] = {"begin",2,250,-195.216248,65.128845,-105.216232,115.128853,0.000000,"begin"};
 item3[] = {"cache_for_AI_",4,218,-306.548492,126.416489,-216.548492,176.416489,1.000000,"cache" \n "for AI?"};
@@ -9,7 +9,7 @@ item4[] = {"cache",2,250,-305.433960,217.955521,-215.433945,267.955475,0.000000,
 item5[] = {"unCache_for_AI_",4,218,-193.956940,129.134674,-103.956940,179.134674,1.000000,"unCache" \n "for AI?"};
 item6[] = {"unCache",2,250,-193.956955,218.653885,-103.956940,268.653931,0.000000,"unCache"};
 item7[] = {"reSync_leader",4,218,-259.751007,291.135986,-150.551178,348.335876,2.000000,"reSync leader"};
-item8[] = {"allDead_",4,4314,-396.858551,304.806641,-306.858551,354.806641,3.000000,"allDead?"};
+item8[] = {"allDead_",4,218,-396.858551,304.806641,-306.858551,354.806641,3.000000,"allDead?"};
 item9[] = {"end",1,250,-519.399902,383.839478,-429.399597,433.839447,0.000000,"end"};
 item10[] = {"delay",8,218,-453.643311,137.457932,-363.643311,187.457932,0.000000,"delay"};
 item11[] = {"delayed",2,250,-496.324066,202.799103,-406.323944,252.799118,0.000000,"delayed"};
@@ -51,7 +51,7 @@ link25[] = {17,9};
 link26[] = {18,19};
 link27[] = {20,9};
 globals[] = {0.000000,0,0,0,0,640,480,1,39,6316128,1,-738.175598,360.836456,541.471069,-137.843567,1071,662,1};
-window[] = {0,-1,-1,-1,-1,860,52,1723,52,1,1089};
+window[] = {0,-1,-1,-1,-1,938,130,1801,130,1,1089};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -63,15 +63,15 @@ class FSM
     {
       name = "init";
       init = /*%FSM<STATEINIT""">*/"//I'm a very tall midget" \n
-       "private[""_distance"",""_group"",""_leader"",""_toCache"",""_fps"",""_debug"",""_t"",""_groupcount""];" \n
+       "private[""_distance"",""_group"",""_leader"",""_toCache"",""_fps"",""_debug"",""_t"",""_groupcount"",""_trandomc"",""_trandomu""];" \n
        "_distance = _this select 0;" \n
        "_group = _this select 1;" \n
        "_fps = _this select 2;" \n
        "_debug = _this select 3;" \n
        "_leader = leader _group;" \n
        "_groupCount = ({alive _x} count units _group);" \n
-       "_trandomc = 1 + (random 2);" \n
-       "_trandomu = 3 + (random 2);"/*%FSM</STATEINIT""">*/;
+       "_trandomc = (1 + (random 2));" \n
+       "_trandomu = (3 + (random 2));"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
