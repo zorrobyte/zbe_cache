@@ -1,7 +1,7 @@
 /*%FSM<COMPILE "scriptedFSM.cfg, zbe_aiCaching">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"init",0,4346,-193.483002,-91.140106,-103.483002,-41.140106,0.000000,"init"};
+item0[] = {"init",0,250,-193.483002,-91.140106,-103.483002,-41.140106,0.000000,"init"};
 item1[] = {"ready_",4,218,-191.749756,-19.800257,-101.749763,30.199743,0.000000,"ready?"};
 item2[] = {"begin",2,250,-195.216248,65.128845,-105.216232,115.128853,0.000000,"begin"};
 item3[] = {"cache_for_AI_",4,218,-306.548492,126.416489,-216.548492,176.416489,1.000000,"cache" \n "for AI?"};
@@ -21,7 +21,7 @@ item16[] = {"unit_died_",4,218,-396.614685,84.259239,-306.614685,134.259216,1.00
 item17[] = {"disabled_",4,218,-363.643097,367.045807,-273.643097,417.045837,3.000000,"disabled?"};
 item18[] = {"if_player_is_leader",4,218,-158.950836,-149.471191,-43.840740,-96.007736,1.000000,"if player is" \n "leader then" \n " exit"};
 item19[] = {"exitIsPlayer",1,250,-49.279797,-188.350754,40.720234,-138.350769,0.000000,"exitIsPlayer"};
-item20[] = {"grpNull_",4,218,-646.310730,185.444565,-556.310364,235.444412,2.000000,"grpNull?"};
+item20[] = {"grpNull_",4,4314,-646.310730,185.444565,-556.310364,235.444412,2.000000,"grpNull?"};
 item21[] = {"grpNull_",4,218,-247.258865,391.512390,-157.258331,441.512482,4.000000,"grpNull?"};
 link0[] = {0,1};
 link1[] = {0,18};
@@ -38,9 +38,9 @@ link11[] = {4,17};
 link12[] = {4,21};
 link13[] = {5,6};
 link14[] = {6,3};
-link15[] = {6,8};
-link16[] = {6,13};
-link17[] = {6,17};
+link15[] = {6,7};
+link16[] = {6,8};
+link17[] = {6,13};
 link18[] = {6,21};
 link19[] = {7,6};
 link20[] = {8,9};
@@ -55,8 +55,8 @@ link28[] = {17,9};
 link29[] = {18,19};
 link30[] = {20,9};
 link31[] = {21,9};
-globals[] = {0.000000,0,0,0,0,640,480,1,39,6316128,1,-777.449402,507.040253,624.854431,-169.106476,1071,662,1};
-window[] = {0,-1,-1,-1,-1,860,52,1723,52,1,1089};
+globals[] = {0.000000,0,0,0,0,640,480,1,39,6316128,1,-981.484131,711.074402,750.970764,-295.223175,1071,662,1};
+window[] = {0,-1,-1,-1,-1,886,78,1749,78,1,1089};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -68,12 +68,14 @@ class FSM
     {
       name = "init";
       init = /*%FSM<STATEINIT""">*/"//I'm a very tall midget" \n
-       "private[""_distance"",""_group"",""_leader"",""_toCache"",""_fps"",""_debug"",""_t""];" \n
+       "private[""_distance"",""_group"",""_leader"",""_toCache"",""_fps"",""_debug"",""_t"",""_groupcount""];" \n
        "_distance = _this select 0;" \n
        "_group = _this select 1;" \n
        "_fps = _this select 2;" \n
        "_debug = _this select 3;" \n
-       "_leader = leader _group;"/*%FSM</STATEINIT""">*/;
+       "_leader = leader _group;" \n
+       "_groupCount = ({alive _x} count units _group);" \n
+       "_trandom = 3 + (floor (random 2));"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
@@ -114,9 +116,7 @@ class FSM
     class begin
     {
       name = "begin";
-      init = /*%FSM<STATEINIT""">*/"private[""_groupcount""];" \n
-       "_groupCount = ({alive _x} count units _group);" \n
-       "if (zbe_debug) then {" \n
+      init = /*%FSM<STATEINIT""">*/"if (zbe_debug) then {" \n
        "diag_log format [""ZBE_Cache starting for group %1"",_group];" \n
        "};"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
@@ -180,8 +180,7 @@ class FSM
           to="unCache";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"!(alive _leader) && {!(simulationEnabled (leader _group))}"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"_leader = (leader _group);" \n
-           "call zbe_unCache;" \n
+          action=/*%FSM<ACTION""">*/"call zbe_unCache;" \n
            "_state = ""UNCACHED"";" \n
            "if (zbe_debug) then {" \n
            "diag_log format [""ZBE_Cache leader synced for %1, uncached %2"",_group,_leader];" \n
@@ -251,14 +250,18 @@ class FSM
           action=/*%FSM<ACTION""">*/"call zbe_unCache;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
-        /*%FSM<LINK "disabled_">*/
-        class disabled_
+        /*%FSM<LINK "reSync_leader">*/
+        class reSync_leader
         {
-          priority = 3.000000;
-          to="end";
+          priority = 2.000000;
+          to="unCache";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"(_group getVariable ""zbe_cacheDisabled"")"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!(alive _leader) && {!(simulationEnabled (leader _group))}"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"call zbe_unCache;" \n
+           "_state = ""UNCACHED"";" \n
+           "if (zbe_debug) then {" \n
+           "diag_log format [""ZBE_Cache leader synced for %1, uncached %2"",_group,_leader];" \n
+           "};"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
         /*%FSM<LINK "cache_for_AI_">*/
@@ -313,7 +316,7 @@ class FSM
           priority = 0.000000;
           to="cache";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"(time - _t) > 1.5;"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(time - _t) > _trandom;"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"call zbe_setPosLight;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -334,7 +337,7 @@ class FSM
           priority = 0.000000;
           to="unCache";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"(time - _t) > 5;"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(time - _t) > _trandom;"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
