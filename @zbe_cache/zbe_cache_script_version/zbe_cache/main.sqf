@@ -23,20 +23,19 @@ zbe_centerPOS = [zbe_mapside, zbe_mapside, 0];
 
 [] spawn  {
 	while {true} do {
-		sleep 15;
 		zbe_players = (switchableUnits + playableUnits);
-		{
-			_disable = _x getVariable "zbe_cacheDisabled";
-			_disable = if (isNil "_disable") then { false;
-				} else {_disable;
-				};
-			if (!_disable && !(_x in zbe_cachedGroups)) then {
-					zbe_cachedGroups = zbe_cachedGroups + [_x];
-				 [zbe_aiCacheDist, _x, zbe_minFrameRate, zbe_debug] execFSM "zbe_cache\zbe_aiCaching.fsm";
-				};
-		} forEach allGroups;
+
+				 	{
+					_grpIndex = allGroups find _x;
+					_grp = allGroups select _grpIndex;
+					_fsmHandle = format ["fsm_%1",_grpIndex];
+					_fsmHandle = [zbe_aiCacheDist, _grp, zbe_minFrameRate] execFSM "zbe_cache\zbe_aiCaching.fsm";
+					//[zbe_aiCacheDist, _x, zbe_minFrameRate, zbe_debug] execFSM "\zbe_cache_addon_version\zbe_cache\zbe_aiCaching.fsm";
+					waitUntil {(completedFSM _fsmHandle)};			// Wait for one FSM to complete before running the next
+					} count allGroups;
 	};
 };
+
 // Vehicle Caching Beta (for client FPS)
 [] spawn {
 	private ["_assetscar", "_assetsair", "_assetsboat"];
