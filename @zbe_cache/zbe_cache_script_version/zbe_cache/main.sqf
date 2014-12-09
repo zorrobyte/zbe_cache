@@ -23,6 +23,7 @@ zbe_centerPOS = [zbe_mapside, zbe_mapside, 0];
 
 [] spawn  {
 	while {true} do {
+		sleep 0.01;
 		zbe_players = (switchableUnits + playableUnits);
 
 				 	{
@@ -30,8 +31,7 @@ zbe_centerPOS = [zbe_mapside, zbe_mapside, 0];
 					_grp = allGroups select _grpIndex;
 					_fsmHandle = format ["fsm_%1",_grpIndex];
 					_fsmHandle = [zbe_aiCacheDist, _grp, zbe_minFrameRate] execFSM "zbe_cache\zbe_aiCaching.fsm";
-					//[zbe_aiCacheDist, _x, zbe_minFrameRate, zbe_debug] execFSM "\zbe_cache_addon_version\zbe_cache\zbe_aiCaching.fsm";
-					waitUntil {(completedFSM _fsmHandle)};			// Wait for one FSM to complete before running the next
+					waitUntil {(completedFSM _fsmHandle)};
 					} count allGroups;
 	};
 };
