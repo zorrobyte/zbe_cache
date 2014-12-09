@@ -99,6 +99,7 @@ class FSM
            "		};" \n
            "	} forEach _toCache;" \n
            "_s = true;" \n
+           "_p = true;" \n
            "if (zbe_debug) then {" \n
            "diag_log format [""ZBE_Cache uncached %1"",_group];" \n
            "};"/*%FSM</ACTION""">*/;
@@ -117,6 +118,7 @@ class FSM
            "	} forEach _toCache;" \n
            "_group setVariable [""cached"",false];" \n
            "_group setVariable [""uncached"",true];" \n
+           "_s = true;" \n
            "if (zbe_debug) then {" \n
            "diag_log format [""ZBE_Cache cached %1"",_group];" \n
            "};"/*%FSM</ACTION""">*/;
