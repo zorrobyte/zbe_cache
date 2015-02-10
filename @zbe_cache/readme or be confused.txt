@@ -32,48 +32,8 @@ Useful RPT/hintSilent debug option
 Requirements:
 None. Use the script version to distribute in your missions or use the addon version only on the server.
 
-Changelog:
-v4.4c
-Fixed missing }; for script version
-Added per vehicle type caching distance setting (Car,Air,Boat)
-v4.4b
-Changed setPosASL back to setPos so units don't spawn outside buildings thanks to Zriel
-Improved debug readability thanks to whiztler
-Changed debug loop condition thanks to Pepe Hal
-Removed "Dedicated/Client" FSM segementation and now only using a single FSM for all as setPOS ran from multiple machines causes mayhem thanks to Zriel
-Stopped calling for map center's POS every loop thanks to Pepe Hal
-Empty vehicle caching is now called from isServer using enableSimulationGlobal
-Removed hideObject as no longer needed as units setPos to leader when cached
-Changed zbe_centerPOS function to one time call instead of function
-ZBE_Caching to ZBE_Cache for consistency
-There is now no difference between the addon vs script version and addon only needs to be ran on server
-CBA is no longer required, ever
-v4.4a
-Fixed next leader uncache loop, was repeating indefinitely in some cases
-v4.4
-Epicly faster performance! Rewrote cache and uncache conditions to be 25x faster. Now CPS is almost native to FPS (no more script lag). 144 groups 1153AI with 59.8CPS/60FPS
-Bumped -1 auto FPS values to 16 dedi 31 client for a target of 15/30
-Players continue to uncache always within distance set but now AI only uncache for other AI groups IF they are aware of each other (using findNearestEnemy). This keeps AI cached if they have nothing to shoot at and will lead to more overall AI being cached in AIvsAI missions
-Cache FSM now exits for player led AI groups
-v4.3
-*Critical* FSM would not exit due to FSM condition states hating OR (||) and would loop forever causing poor performance over time and setPOS errors
-Added debug switches for cache start/stop/unit died while cached/synced TL. Baretail Arma's RPT file in \AppData\Local\Arma 3\*.rpt
-v4.2
-Removed _orgSpeedMode (cleanup)
-SetPosATL to SetPos for RPT spam fix (Client: Object 14:32 (type Type_89) not found.)
-Resolved disableAI issue (did nothing) as was not implemented properly for dedicated server
-zbe_vehicleCaching.fsm now uses 500ms delay between checking conditions for less load
-Script version no longer uses enableSimulationGlobal/hideObjectGlobal to save packets as it is assumed it will be running on all localities. (Addon version still uses global commands so only the server can run addon, addon still doesn't do empty vehicle caching unless clients run addon as well)
-Updated empty vehicle caching to 1000m until per vehicletype distance is added
-v4.1
-ZBE_Cache no longer uses setSpeedMode, the AI in your missions will proceed as your waypoints intend.
-Changed setPos to setPos formationposition so group leaders move full speed (if speedMode "Normal"/"Full").
-Changed zbe_setPos to zbe_setPosLight and zbe_SetPosFull. Light setPos formationPosition, Full setPos formationPosition with 3 second allowdamage false so units don't die on inclines when uncached.
-zbe_aiCachingDedicated.fsm now uses disableai commands for additional performance savings. Client/Listen server does not as disableai can break  animations
-As a note if ran as an addon on server only, client's won't use vehicle caching. If your mission intends to have more then 100 empty vehicles, I strongly recommend using the script version
-v4
-Created new directory and rewrote from scratch
-Caching now works per group using FSMs instead of iterating through allGroups array
+Changelog is here:
+http://forums.bistudio.com/showthread.php?179777-ZBE_Cache-AI-amp-Vehicle-caching-script-addon
 
 Installation for Addon version:
 1. UnZIP @ZBE_Cache into Arma 3 directory
